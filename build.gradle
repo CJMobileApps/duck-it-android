@@ -2,10 +2,12 @@
 buildscript {
     ext {
         kotlin_version = '1.7.20'
+        jacocoVersion = '0.8.4'
     }
     dependencies {
         classpath("com.google.dagger:hilt-android-gradle-plugin:2.43")
         classpath("de.mannodermaus.gradle.plugins:android-junit5:1.8.2.1")
+        classpath("org.jacoco:org.jacoco.core:$jacocoVersion")
     }
 }
 
