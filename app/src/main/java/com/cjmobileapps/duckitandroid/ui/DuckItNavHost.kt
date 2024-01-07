@@ -6,7 +6,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.cjmobileapps.duckitandroid.ui.newpost.DuckItDetailUi
 import com.cjmobileapps.duckitandroid.ui.newpost.viewmodel.NewPostViewModel
 import com.cjmobileapps.duckitandroid.ui.newpost.viewmodel.NewPostViewModelImpl
 import com.cjmobileapps.duckitandroid.ui.list.DuckItListUi
@@ -15,6 +14,7 @@ import com.cjmobileapps.duckitandroid.ui.list.viewmodel.DuckItListViewModelImpl
 import com.cjmobileapps.duckitandroid.ui.login.LogInUi
 import com.cjmobileapps.duckitandroid.ui.login.viewmodel.LogInViewModel
 import com.cjmobileapps.duckitandroid.ui.login.viewmodel.LogInViewModelImpl
+import com.cjmobileapps.duckitandroid.ui.newpost.NewPostUi
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -34,12 +34,12 @@ fun NavigationGraph(
                 snackbarHostState = snackbarHostState
             )
         }
-        composable(NavItem.DuckItDetail.navRoute) {
-            val duckItDetailViewModel: NewPostViewModel = hiltViewModel<NewPostViewModelImpl>()
+        composable(NavItem.NewPost.navRoute) {
+            val newPostViewModel: NewPostViewModel = hiltViewModel<NewPostViewModelImpl>()
 
-            DuckItDetailUi(
+            NewPostUi(
                 navController = navController,
-                duckItDetailViewModel = duckItDetailViewModel
+                newPostViewModel = newPostViewModel
             )
         }
         composable(NavItem.LogIn.navRoute) {
@@ -60,7 +60,7 @@ sealed class NavItem(
 ) {
     object List : NavItem(navRoute = "nav_list")
 
-    object DuckItDetail : NavItem(navRoute = "nav_detail")
+    object NewPost : NavItem(navRoute = "nav_new_post")
 
     object LogIn : NavItem(navRoute = "nav_log_in")
 }
