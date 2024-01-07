@@ -1,3 +1,18 @@
 <resources>
-    <string name="app_name">Duck It Android</string>
+    <string name="app_name">Duck It</string>
+    <string name="activity_name">Duck It Android</string>
+    <string name="some_error_occurred">Some Error Occurred</string>
+    <string name="error_downvoting">Error Downvoting</string>
+    <string name="error_upvoting">Error Upvoting</string>
+    <string name="unable_to_get_duckit_list">Unable To Get DuckIt List</string>
+    <string name="you_need_to_log_in_first">You need to Log In first</string>
+    <string name="no_ducks_found">No Ducks Found</string>
+    <string name="duck_image">Duck Image</string>
+    <string name="upvote_button">Upvote Button</string>
+    <string name="downvote_button">Downvote Button</string>
+    <string name="user_logged_out">User Logged Out</string>
+    <string name="account_created">Account Created</string>
+    <string name="account_signed_in">Account Signed In</string>
+    <string name="log_in">Log In</string>
+    <string name="sign_out">Sign Out</string>
 </resources>
