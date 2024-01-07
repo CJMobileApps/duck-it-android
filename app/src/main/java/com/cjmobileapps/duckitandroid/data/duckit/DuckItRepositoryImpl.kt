@@ -7,6 +7,7 @@ class DuckItRepositoryImpl(
 ): DuckItRepository {
 
     override suspend fun getPosts() = duckItApiDataSource.getPosts()
+
     override suspend fun upvote(postId: String) = duckItApiDataSource.upvote(postId)
 
     override suspend fun downvote(postId: String) = duckItApiDataSource.downvote(postId)

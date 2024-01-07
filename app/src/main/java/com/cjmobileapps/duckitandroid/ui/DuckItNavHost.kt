@@ -7,8 +7,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.cjmobileapps.duckitandroid.ui.newpost.DuckItDetailUi
-import com.cjmobileapps.duckitandroid.ui.newpost.viewmodel.DuckItDetailViewModel
-import com.cjmobileapps.duckitandroid.ui.newpost.viewmodel.DuckItDetailViewModelImpl
+import com.cjmobileapps.duckitandroid.ui.newpost.viewmodel.NewPostViewModel
+import com.cjmobileapps.duckitandroid.ui.newpost.viewmodel.NewPostViewModelImpl
 import com.cjmobileapps.duckitandroid.ui.list.DuckItListUi
 import com.cjmobileapps.duckitandroid.ui.list.viewmodel.DuckItListViewModel
 import com.cjmobileapps.duckitandroid.ui.list.viewmodel.DuckItListViewModelImpl
@@ -35,7 +35,7 @@ fun NavigationGraph(
             )
         }
         composable(NavItem.DuckItDetail.navRoute) {
-            val duckItDetailViewModel: DuckItDetailViewModel = hiltViewModel<DuckItDetailViewModelImpl>()
+            val duckItDetailViewModel: NewPostViewModel = hiltViewModel<NewPostViewModelImpl>()
 
             DuckItDetailUi(
                 navController = navController,

@@ -6,9 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class DuckItDetailViewModelImpl @Inject constructor(
+class NewPostViewModelImpl @Inject constructor(
     private val coroutineDispatchers: CoroutineDispatchers
-) : ViewModel(), DuckItDetailViewModel {
+) : ViewModel(), NewPostViewModel {
 
 
 
