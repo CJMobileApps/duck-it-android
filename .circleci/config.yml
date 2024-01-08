@@ -23,6 +23,7 @@ jobs:
           command: |
             sudo rm -r /usr/lib/jvm/java-11-openjdk-amd64
             java -version
+            ls /usr/lib/jvm
       - android/change-java-version:
           java-version: 17
 #      - android/restore-gradle-cache
