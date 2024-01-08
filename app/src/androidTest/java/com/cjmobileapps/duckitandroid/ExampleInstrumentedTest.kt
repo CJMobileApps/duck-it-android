@@ -2,6 +2,8 @@ package com.cjmobileapps.duckitandroid
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.cjmobileapps.duckitandroid.data.model.TokenResponse
+import com.cjmobileapps.duckitandroid.network.NetworkConstants
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,5 +23,19 @@ class ExampleInstrumentedTest {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         println("HERE_ " + appContext.packageName)
         assertEquals("com.cjmobileapps.duckitandroid.debug", appContext.packageName)
+        assertEquals(
+            NetworkConstants.AUTHORIZATION_HEADER,
+            "Authorization"
+        );
+        assertEquals(
+            NetworkConstants.BEARER,
+            "Bearer "
+        );
+
+        assertEquals(
+            TokenResponse(token = "token").token,
+            "token"
+        )
+
     }
 }
