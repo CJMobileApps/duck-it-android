@@ -9,7 +9,7 @@ jobs:
       tag: 2022.08.1
     steps:
       - checkout
-      - change-java-version:
+      - android/change-java-version:
           java-version: 17
 #      - run:
 #          name: Install OpenJDK 17
