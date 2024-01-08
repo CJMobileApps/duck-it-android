@@ -18,11 +18,11 @@ jobs:
             java -version
 #      - android/change-java-version:
 #          java-version: 17
-      - run:
-          name: Remove Java 11
-          command: |
-            sudo rm -r /usr/lib/jvm/java-11-openjdk-amd64
-            ls /usr/lib/jvm
+#      - run:
+#          name: Remove Java 11
+#          command: |
+#            sudo rm -r /usr/lib/jvm/java-11-openjdk-amd64
+#            ls /usr/lib/jvm
       - run:
           name: Reset JAVA_HOME to 17
           command: |
