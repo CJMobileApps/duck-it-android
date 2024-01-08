@@ -39,8 +39,9 @@ jobs:
             mkdir -p ~/project/jacoco-test-results
             find . -type f -regex ".*/build/reports/jacoco/.*xml" -exec cp {} ~/project/jacoco-test-results/ \;
             ls -a ~/project
+            cat ~/project/build/reports/jacoco/jacocoTestReportDevDebug/jacocoTestReportDevDebug.xml
       - codecov/upload:
-          file: ~/jacoco-test-results/jacocoTestReportDevDebug.xml
+          file: ~/build/reports/jacoco/jacocoTestReportDevDebug/jacocoTestReportDevDebug.xml
   android-test:
     executor:
       name: android/android-machine
