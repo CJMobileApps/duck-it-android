@@ -33,14 +33,14 @@ jobs:
           when: always
       - store_test_results:
           path: ~/test-results/junit
-      - run:
-          name: Save test results 2
-          command: |
-            mkdir -p ~/project/jacoco-test-results
-            find . -type f -regex ".*/build/reports/jacoco/.*xml" -exec cp {} ~/project/ \;
-            ls -a ~/project
-            ls -a ~/project/build/kotlin
-            ls -a ~/project/jacoco-test-results
+#      - run:
+#          name: Save test results 2
+#          command: |
+#            mkdir -p ~/project/jacoco-test-results
+#            find . -type f -regex ".*/build/reports/jacoco/.*xml" -exec cp {} ~/project/ \;
+#            ls -a ~/project
+#            ls -a ~/project/build/kotlin
+#            ls -a ~/project/jacoco-test-results
       #            cat ~/project/build/reports/jacoco/jacocoTestReportDevDebug/jacocoTestReportDevDebug.xml
       - codecov/upload:
           file: jacocoTestReportDevDebug.xml
