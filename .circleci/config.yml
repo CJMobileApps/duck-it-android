@@ -9,15 +9,15 @@ jobs:
       tag: 2022.08.1
     steps:
       - checkout
-      - run:
-          name: Install OpenJDK 17
-          command: |
-            sudo apt-get update && sudo apt-get install openjdk-17-jdk
-            sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
-            sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
-            java -version
-      - android/change-java-version:
-          java-version: 17
+#      - run:
+#          name: Install OpenJDK 17
+#          command: |
+#            sudo apt-get update && sudo apt-get install openjdk-17-jdk
+#            sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+#            sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
+#            java -version
+#      - android/change-java-version:
+#          java-version: 17
       - run:
           name: Remove Java 11
           command: |
@@ -42,8 +42,6 @@ jobs:
             find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
           when: always
       - store_test_results:
-          path: ~/test-results/junit
-      - store_artifacts:
           path: ~/test-results/junit
   android-test:
     executor:
