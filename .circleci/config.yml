@@ -140,5 +140,5 @@ jobs:
 workflows:
   test-and-build:
     jobs:
-#      - unit-test
+      - unit-test
       - android-test
