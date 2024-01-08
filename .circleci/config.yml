@@ -18,6 +18,13 @@ jobs:
             java -version
       - android/change-java-version:
           java-version: 17
+      - run:
+          name: Remove Java 11
+          command: |
+            sudo rm -r /usr/lib/jvm/java-11-openjdk-amd64
+            java -version
+      - android/change-java-version:
+          java-version: 17
 #      - android/restore-gradle-cache
       - android/run-tests:
           test-command: ./gradlew testDevDebugUnitTest
@@ -126,3 +133,4 @@ workflows:
       - unit-test
 #      - android-test todo fix ui test failing and slow as hell
 # todo gradle clean build entire app
+# https://stackoverflow.com/questions/71532385/android-gradle-plugin-requires-java-11-to-run-you-are-currently-using-java-1-8
