@@ -43,7 +43,7 @@ jobs:
             ls -a ~/project/jacoco-test-results
       #            cat ~/project/build/reports/jacoco/jacocoTestReportDevDebug/jacocoTestReportDevDebug.xml
       - codecov/upload:
-          file: .*/jacocoTestReportDevDebug.xml
+          file: ~/jacoco-test-results/jacocoTestReportDevDebug.xml
   #          file: ~/build/jacoco-test-results/jacocoTestReportDevDebug.xml
   android-test:
     executor:
