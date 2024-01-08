@@ -136,7 +136,6 @@ jobs:
       - store_test_results:
           path: ~/test-results/androidTest
       - codecov/upload:
-          file: jacocoTestReportDevDebug.xml
 workflows:
   test-and-build:
     jobs:
