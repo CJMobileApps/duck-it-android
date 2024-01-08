@@ -50,6 +50,18 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install OpenJDK 17
+          command: |
+            sudo apt-get update && sudo apt-get install openjdk-17-jdk
+            sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+            sudo update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
+            java -version
+      - run:
+          name: Reset JAVA_HOME to 17
+          command: |
+            sudo echo "export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> "$BASH_ENV"
+            source "$BASH_ENV"
+      - run:
           name: Create avd
           command: |
             SYSTEM_IMAGES="system-images;android-29;default;x86"
@@ -134,6 +146,6 @@ workflows:
   test-and-build:
     jobs:
       - unit-test
-#      - android-test todo fix ui test failing and slow as hell
+      - android-test #todo fix ui test failing and slow as hell
 # todo gradle clean build entire app
 # https://stackoverflow.com/questions/71532385/android-gradle-plugin-requires-java-11-to-run-you-are-currently-using-java-1-8
