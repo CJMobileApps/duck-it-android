@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   android: circleci/android@2.4.0
+  codecov: codecov/codecov@3.3.0
 jobs:
   unit-test:
     executor:
@@ -22,7 +23,7 @@ jobs:
             source "$BASH_ENV"
       - android/restore-gradle-cache
       - android/run-tests:
-          test-command: ./gradlew testDevDebugUnitTest
+          test-command: ./gradlew jacocoTestReportDevDebug
       - android/save-gradle-cache
       - run:
           name: Save test results
@@ -32,6 +33,8 @@ jobs:
           when: always
       - store_test_results:
           path: ~/test-results/junit
+      - codecov/upload:
+          file: jacocoTestReportDevDebug.xml
   android-test:
     executor:
       name: android/android-machine
@@ -109,7 +112,7 @@ jobs:
                until [ $n -gt $MAX_TRIES ]
                do
                   echo "Starting test attempt $n"
-                  ./gradlew connectedDebugAndroidTest && break
+                  ./gradlew createDevDebugCoverageReport && break
                   n=$[$n+1]
                   sleep 5
                done
@@ -132,6 +135,8 @@ jobs:
           when: always
       - store_test_results:
           path: ~/test-results/androidTest
+      - codecov/upload:
+          file: app/build/reports/coverage/androidTest/dev/debug/connected/index.html
 workflows:
   test-and-build:
     jobs:
