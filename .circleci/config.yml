@@ -34,8 +34,9 @@ jobs:
       - store_test_results:
           path: ~/test-results/junit
       - run:
-          name: Save test results
+          name: Save test results 2
           command: |
+            mkdir -p ~/jacoco-test-results
             find . -type f -regex ".*/build/reports/jacoco/.*xml" -exec cp {} ~/jacoco-test-results/ \;
             ls -a ~/jacoco-test-results
       - codecov/upload:
