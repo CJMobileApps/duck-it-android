@@ -41,9 +41,10 @@ jobs:
             ls -a ~/project
             ls -a ~/project/build/kotlin
             ls -a ~/project/jacoco-test-results
-#            cat ~/project/build/reports/jacoco/jacocoTestReportDevDebug/jacocoTestReportDevDebug.xml
+      #            cat ~/project/build/reports/jacoco/jacocoTestReportDevDebug/jacocoTestReportDevDebug.xml
       - codecov/upload:
-          file: ~/build/jacoco-test-results/jacocoTestReportDevDebug.xml
+          file: .*/jacocoTestReportDevDebug.xml
+  #          file: ~/build/jacoco-test-results/jacocoTestReportDevDebug.xml
   android-test:
     executor:
       name: android/android-machine
