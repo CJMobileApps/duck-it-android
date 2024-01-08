@@ -112,7 +112,7 @@ jobs:
                until [ $n -gt $MAX_TRIES ]
                do
                   echo "Starting test attempt $n"
-                  ./gradlew connectedDebugAndroidTest && break
+                  ./gradlew createDevDebugCoverageReport && break
                   n=$[$n+1]
                   sleep 5
                done
@@ -135,8 +135,10 @@ jobs:
           when: always
       - store_test_results:
           path: ~/test-results/androidTest
+      - codecov/upload:
+          file: jacocoTestReportDevDebug.xml
 workflows:
   test-and-build:
     jobs:
-      - unit-test
-      ##- android-test
+#      - unit-test
+      - android-test
