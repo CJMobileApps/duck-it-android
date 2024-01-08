@@ -136,6 +136,7 @@ jobs:
       - store_test_results:
           path: ~/test-results/androidTest
       - codecov/upload:
+          file: index.html
 workflows:
   test-and-build:
     jobs:
