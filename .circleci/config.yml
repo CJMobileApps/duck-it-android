@@ -36,7 +36,7 @@ jobs:
       - run:
           name: Save test results
           command: |
-            ls ~/build/reports/
+            ls ~/build
       - codecov/upload:
           file: ~/build/reports/jacoco/.*xml
   android-test:
