@@ -28,8 +28,8 @@ jobs:
           command: |
             sudo echo "export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> "$BASH_ENV"
             source "$BASH_ENV"
-      - android/change-java-version:
-          java-version: 17
+#      - android/change-java-version:
+#          java-version: 17
 #      - android/restore-gradle-cache
       - android/run-tests:
           test-command: ./gradlew testDevDebugUnitTest
