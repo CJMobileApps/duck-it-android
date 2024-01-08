@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.cjmobileapps.duckitandroid", appContext.packageName)
+        assertEquals("com.cjmobileapps.duckitandroid.debug", appContext.packageName)
     }
 }

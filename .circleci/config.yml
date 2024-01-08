@@ -99,14 +99,14 @@ jobs:
           key: gradle-v1-{{ arch }}-{{ checksum "/tmp/gradle_cache_seed" }}
       - run:
           # run in parallel with the emulator starting up, to optimize build time
-          name: Run assembleFake task
+          name: Run assembleDebug task
           command: |
-            ./gradlew assembleFake
+            ./gradlew assembleDebug
       - run:
-          name: Save fake build
+          name: Save debug build
           command: |
             mkdir -p ~/app/build/
-            find . -type f -regex ".*/app/build/outputs/apk/fake/debug/.*apk" -exec cp {} ~/app/build/ \;
+            find . -type f -regex ".*/app/build/outputs/apk/dev/debug/.*apk" -exec cp {} ~/app/build/ \;
           when: always
       - store_artifacts:
           path: ~/app/build
