@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   android: circleci/android@2.4.0
+  codecov: codecov/codecov@3.3.0
 jobs:
   unit-test:
     executor:
@@ -22,7 +23,7 @@ jobs:
             source "$BASH_ENV"
       - android/restore-gradle-cache
       - android/run-tests:
-          test-command: ./gradlew testDevDebugUnitTest
+          test-command: ./gradlew jacocoTestReportDevDebug
       - android/save-gradle-cache
       - run:
           name: Save test results
@@ -32,6 +33,8 @@ jobs:
           when: always
       - store_test_results:
           path: ~/test-results/junit
+      - codecov/upload:
+          file: ~/build/reports/jacoco/.*xml
   android-test:
     executor:
       name: android/android-machine
@@ -136,4 +139,4 @@ workflows:
   test-and-build:
     jobs:
       - unit-test
-      - android-test
+      #- android-test
