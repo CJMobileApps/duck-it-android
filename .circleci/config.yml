@@ -37,7 +37,7 @@ jobs:
           name: Save test results
           command: |
             find . -type f -regex ".*/build/reports/jacoco/.*xml" -exec cp {} ~/test-results/junit/ \;
-            ls ~/build
+            ls -a ~
       - codecov/upload:
           file: ~/build/reports/jacoco/.*xml
   android-test:
