@@ -36,10 +36,10 @@ jobs:
       - run:
           name: Save test results
           command: |
-            find . -type f -regex ".*/build/reports/jacoco/.*xml" -exec cp {} ~/test-results/junit/ \;
-            ls -a ~/test-results/junit
+            find . -type f -regex ".*/build/reports/jacoco/.*xml" -exec cp {} ~/jacoco-test-results/ \;
+            ls -a ~/jacoco-test-results
       - codecov/upload:
-          file: ~/build/reports/jacoco/.*xml
+          file: ~/jacoco-test-results/.*xml
   android-test:
     executor:
       name: android/android-machine
