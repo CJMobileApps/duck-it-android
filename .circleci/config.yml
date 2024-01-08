@@ -36,10 +36,10 @@ jobs:
       - run:
           name: Save test results 2
           command: |
-            mkdir -p ~/jacoco-test-results
-            find . -type f -regex ".*/build/reports/jacoco/.*xml" -exec cp {} ~/jacoco-test-results/ \;
+            mkdir -p ~/project/jacoco-test-results
+            find . -type f -regex ".*/build/reports/jacoco/.*xml" -exec cp {} ~/project/jacoco-test-results/ \;
             ls -a ~/jacoco-test-results
-            ls -a ~
+            ls -a ~/project
       - codecov/upload:
           file: ~/jacoco-test-results/jacocoTestReportDevDebug.xml
   android-test:
