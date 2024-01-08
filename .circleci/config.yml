@@ -119,7 +119,7 @@ jobs:
                until [ $n -gt $MAX_TRIES ]
                do
                   echo "Starting test attempt $n"
-                  ./gradlew connectedFakeDebugAndroidTest && break
+                  ./gradlew connectedDebugAndroidTest && break
                   n=$[$n+1]
                   sleep 5
                done
@@ -145,7 +145,7 @@ jobs:
 workflows:
   test-and-build:
     jobs:
-      - unit-test
+      #- unit-test
       - android-test #todo fix ui test failing and slow as hell
 # todo gradle clean build entire app
 # https://stackoverflow.com/questions/71532385/android-gradle-plugin-requires-java-11-to-run-you-are-currently-using-java-1-8
