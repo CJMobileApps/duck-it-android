@@ -22,7 +22,6 @@ jobs:
           name: Remove Java 11
           command: |
             sudo rm -r /usr/lib/jvm/java-11-openjdk-amd64
-            java -version
             ls /usr/lib/jvm
       - run:
           name: Reset JAVA_HOME to 17
