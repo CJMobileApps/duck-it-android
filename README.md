@@ -20,5 +20,5 @@ TODO | Future Features
 * [ ] Add pull down refresh.
 * [ ] Look into add better Nav graph popping backstack
 * [ ] Make app more accessible / Usability
-* [ ] Add more Unit Test. You can never have enough Unit Test.
+* [ ] Tablets
 * [ ] Need a Ui designer to make it more pretty.
