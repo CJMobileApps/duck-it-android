@@ -1,6 +1,7 @@
 package com.cjmobileapps.duckitandroid.data.datasource
 
 import com.cjmobileapps.duckitandroid.data.model.EmailPasswordRequest
+import com.cjmobileapps.duckitandroid.data.model.NewPostRequest
 import com.cjmobileapps.duckitandroid.data.model.Posts
 import com.cjmobileapps.duckitandroid.data.model.TokenResponse
 import com.cjmobileapps.duckitandroid.data.model.Upvotes
@@ -50,6 +51,14 @@ class DuckItApiDataSource(
         return withContext(coroutineDispatchers.io) {
             duckItApi
                 .signUpAsync(emailPasswordRequest)
+                .await()
+        }
+    }
+
+    suspend fun newPost(newPost: NewPostRequest, authorizationToken: String): Response<Unit> {
+        return withContext(coroutineDispatchers.io) {
+            duckItApi
+                .newPostAsync(newPost = newPost, authorizationToken = authorizationToken)
                 .await()
         }
     }

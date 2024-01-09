@@ -15,11 +15,7 @@ class AccountRepositoryImpl(
 
     override suspend fun duckItTokenFlow() = duckItLocalDataSource.duckItTokenFlow
 
-    override suspend fun addDuckItToken(token: String) {
-        duckItLocalDataSource.addDuckItToken(token)
-    }
+    override suspend fun addDuckItToken(token: String) = duckItLocalDataSource.addDuckItToken(token)
 
-    override suspend fun removeDuckItToken() {
-        duckItLocalDataSource.removeDuckItToken()
-    }
+    override suspend fun removeDuckItToken() = duckItLocalDataSource.removeDuckItToken()
 }

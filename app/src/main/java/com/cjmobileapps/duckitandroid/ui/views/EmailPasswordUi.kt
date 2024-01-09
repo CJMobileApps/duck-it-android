@@ -13,7 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.cjmobileapps.duckitandroid.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,16 +48,17 @@ fun EmailPasswordUi(
                     .testTag(""),
                 value = emailText,
                 onValueChange = onEmailValueChange,
-                label = { Text("Email") }
+                label = { Text(stringResource(R.string.email)) }
             )
 
+            //todo use password outline textfield input
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .testTag(""),
                 value = passwordText,
                 onValueChange = onPasswordValueChange,
-                label = { Text("Password") }
+                label = { Text(stringResource(R.string.password)) }
             )
 
             Button(
@@ -75,6 +78,6 @@ fun EmailPasswordUi(
 //@Composable
 //fun GreetingPreview() {
 //    DuckItAndroidTheme {
-//        Greeting("Android")
+//
 //    }
 //}

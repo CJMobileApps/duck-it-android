@@ -19,9 +19,12 @@ class AccountUseCase(
 
     var isUserLoggedIn = false
 
+    var token = ""
+
     suspend fun initDuckItTokenFlow(onIsUserLoggedIn: (isUserLoggedIn: Boolean) -> Unit) {
         accountRepository.duckItTokenFlow().collectLatest { token ->
             if (token.isNotEmpty()) {
+                this.token = token
                 isUserLoggedIn = true
                 onIsUserLoggedIn.invoke(true)
             } else {
@@ -36,12 +39,18 @@ class AccountUseCase(
 
         accountRepository.signIn(emailPasswordRequest)
             .onSuccess { token ->
-                responseWrapper = addDuckItToken(token = token, accountState = AccountState.AccountSignedIn)
+                responseWrapper =
+                    addDuckItToken(token = token, accountState = AccountState.AccountSignedIn)
             }
             .onError { error, code ->
                 responseWrapper = when (code) {
                     HttpURLConnection.HTTP_FORBIDDEN -> {
-                        ResponseWrapper(error = Error(isError = true, message = "Password Incorrect"))
+                        ResponseWrapper(
+                            error = Error(
+                                isError = true,
+                                message = "Password Incorrect"
+                            )
+                        )
                     }
 
                     HttpURLConnection.HTTP_NOT_FOUND -> {
@@ -67,12 +76,18 @@ class AccountUseCase(
 
         accountRepository.signUp(emailPasswordRequest)
             .onSuccess { token ->
-                responseWrapper = addDuckItToken(token = token, accountState = AccountState.AccountCreated)
+                responseWrapper =
+                    addDuckItToken(token = token, accountState = AccountState.AccountCreated)
             }
             .onError { error, code ->
-                responseWrapper  = when (code) {
+                responseWrapper = when (code) {
                     HttpURLConnection.HTTP_CONFLICT -> {
-                        ResponseWrapper(error = Error(isError = true, message = "Account Already Exists"))
+                        ResponseWrapper(
+                            error = Error(
+                                isError = true,
+                                message = "Account Already Exists"
+                            )
+                        )
                     }
 
                     else -> {
@@ -89,8 +104,12 @@ class AccountUseCase(
         isUserLoggedIn = false
     }
 
-    private suspend fun addDuckItToken(token: TokenResponse, accountState: AccountState): ResponseWrapper<AccountState> {
+    private suspend fun addDuckItToken(
+        token: TokenResponse,
+        accountState: AccountState
+    ): ResponseWrapper<AccountState> {
         accountRepository.addDuckItToken(token.token)
+        this.token = token.token
         isUserLoggedIn = true
         return ResponseWrapper(data = accountState)
     }

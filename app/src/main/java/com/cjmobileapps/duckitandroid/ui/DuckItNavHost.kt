@@ -39,7 +39,9 @@ fun NavigationGraph(
 
             NewPostUi(
                 navController = navController,
-                newPostViewModel = newPostViewModel
+                newPostViewModel = newPostViewModel,
+                coroutineScope = coroutineScope,
+                snackbarHostState = snackbarHostState
             )
         }
         composable(NavItem.LogIn.navRoute) {

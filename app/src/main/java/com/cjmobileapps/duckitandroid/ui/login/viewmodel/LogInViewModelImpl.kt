@@ -93,7 +93,7 @@ class LogInViewModelImpl @Inject constructor(
 
             accountUseCase.signIn(emailPasswordRequest)
                 ?.onSuccess { accountState ->
-                    val loginSnackbarState =  when(accountState) {
+                    val loginSnackbarState = when (accountState) {
                         AccountState.AccountSignedIn -> LoginSnackbarState.AccountSignedIn
                         AccountState.AccountCreated -> LoginSnackbarState.AccountCreated
                     }
@@ -107,7 +107,7 @@ class LogInViewModelImpl @Inject constructor(
         }
     }
 
-    override fun resetErrorState() {
+    override fun resetSnackbarState() {
         snackbarState.value = LoginSnackbarState.Idle
     }
 

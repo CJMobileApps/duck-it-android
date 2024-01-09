@@ -20,7 +20,7 @@ interface LogInViewModel {
 
     fun loginButtonClicked()
 
-    fun resetErrorState()
+    fun resetSnackbarState()
 
     fun getLogInNavRouteUiState(): LogInViewModelImpl.LogInNavRouteUi
 
