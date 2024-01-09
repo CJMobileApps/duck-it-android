@@ -22,3 +22,9 @@ TODO | Future Features
 * [ ] Make app more accessible / Usability
 * [ ] Tablets
 * [ ] Need a Ui designer to make it more pretty.
+
+Screen shots and Video Walkthrough
+----
+![duck it list](https://github.com/CJMobileApps/duck-it-android/assets/18547470/7361e2e6-25d8-4ca1-9f52-16241fa777ac)
+![log in](https://github.com/CJMobileApps/duck-it-android/assets/18547470/cf3a67e0-bc47-41f2-a700-5a1057d3dcd2)
+![create new post](https://github.com/CJMobileApps/duck-it-android/assets/18547470/bbaaab69-76bd-4b55-9e53-aa0ac3718b5b)
