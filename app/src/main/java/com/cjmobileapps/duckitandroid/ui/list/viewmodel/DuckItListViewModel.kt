@@ -12,7 +12,7 @@ interface DuckItListViewModel {
 
     fun downvote(postId: String)
 
-    fun resetErrorState()
+    fun resetSnackbarState()
 
     fun userLoggedInState(): UserLoggedInState
 
@@ -20,5 +20,5 @@ interface DuckItListViewModel {
 
     fun getDuckItListNavRouteUiState(): DuckItListViewModelImpl.DuckItListNavRouteUi
 
-    fun  resetNavRouteUiToIdle()
+    fun resetNavRouteUiToIdle()
 }

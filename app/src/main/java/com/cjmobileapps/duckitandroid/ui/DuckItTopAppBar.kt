@@ -44,6 +44,8 @@ fun DuckItTopAppBar(
     val horizontalArrangement =
         if (navController.previousBackStackEntry != null) Arrangement.Start else Arrangement.Center
 
+    val currentRoute = navController.currentBackStackEntry?.destination?.route
+
     TopAppBar(
         modifier = Modifier.fillMaxWidth(),
         colors = TopAppBarDefaults.mediumTopAppBarColors(
@@ -90,6 +92,7 @@ fun DuckItTopAppBar(
         actions = {
             val isUserLoggedIn = (userLoggedInState == UserLoggedInState.UserLoggedIn)
 
+            if (currentRoute == NavItem.NewPost.navRoute) return@TopAppBar
             IconButton(onClick = { menuExpanded = !menuExpanded }) {
                 Icon(
                     imageVector = Icons.Filled.MoreVert,
@@ -113,6 +116,20 @@ fun DuckItTopAppBar(
                         onClick = {
                             menuExpanded = false
                             onIsUserLoggedInButtonClick.invoke()
+                        },
+                    )
+                }
+                if (isUserLoggedIn) {
+                    DropdownMenuItem(
+                        text = {
+                            Text(
+                                text = stringResource(R.string.create_new_post),
+                                color = Color.White
+                            )
+                        },
+                        onClick = {
+                            menuExpanded = false
+                            navController.navigate(NavItem.NewPost.navRoute)
                         },
                     )
                 }

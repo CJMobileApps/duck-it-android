@@ -58,10 +58,12 @@ class DataModule {
     @Singleton
     @Provides
     fun duckItUseCase(
-        duckItRepository: DuckItRepository
+        duckItRepository: DuckItRepository,
+        accountUseCase: AccountUseCase
     ): DuckItUseCase {
         return DuckItUseCase(
-            duckItRepository = duckItRepository
+            duckItRepository = duckItRepository,
+            accountUseCase = accountUseCase
         )
     }
 

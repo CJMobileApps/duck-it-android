@@ -1,7 +1,5 @@
 package com.cjmobileapps.duckitandroid.ui.login
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -90,7 +88,7 @@ fun LogInSnackbar(
     LaunchedEffect(key1 = message) {
         coroutineScope.launch {
             snackbarHostState.showSnackbar(message = message)
-            logInViewModel.resetErrorState()
+            logInViewModel.resetSnackbarState()
         }
     }
 }
@@ -101,22 +99,20 @@ fun LogInLoadedUi(
     logInViewModel: LogInViewModel,
     navController: NavController
 ) {
-    Column(modifier = modifier.fillMaxWidth()) {
-        EmailPasswordUi(
-            modifier = modifier,
-            emailText = logInViewModel.getEmailEditText(),
-            onEmailValueChange = {
-                logInViewModel.updateEmailEditText(it)
-            },
-            passwordText = logInViewModel.getPasswordEditText(),
-            onPasswordValueChange = {
-                logInViewModel.updatePasswordEditText(it)
-            },
-            loginButtonText = stringResource(R.string.log_in),
-            isLogInButtonEnabled = logInViewModel.isLogInButtonEnabled(),
-            loginButtonClicked = { logInViewModel.loginButtonClicked() }
-        )
-    }
+    EmailPasswordUi(
+        modifier = modifier,
+        emailText = logInViewModel.getEmailEditText(),
+        onEmailValueChange = {
+            logInViewModel.updateEmailEditText(it)
+        },
+        passwordText = logInViewModel.getPasswordEditText(),
+        onPasswordValueChange = {
+            logInViewModel.updatePasswordEditText(it)
+        },
+        loginButtonText = stringResource(R.string.log_in),
+        isLogInButtonEnabled = logInViewModel.isLogInButtonEnabled(),
+        loginButtonClicked = { logInViewModel.loginButtonClicked() }
+    )
 
     when (logInViewModel.getLogInNavRouteUiState()) {
         is LogInViewModelImpl.LogInNavRouteUi.Idle -> {}

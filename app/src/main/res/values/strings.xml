@@ -15,4 +15,10 @@
     <string name="account_signed_in">Account Signed In</string>
     <string name="log_in">Log In</string>
     <string name="sign_out">Sign Out</string>
+    <string name="new_post_created">New Post Created</string>
+    <string name="create_new_post">Create New Post</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="headline">Headline</string>
+    <string name="image_url">Image Url</string>
 </resources>

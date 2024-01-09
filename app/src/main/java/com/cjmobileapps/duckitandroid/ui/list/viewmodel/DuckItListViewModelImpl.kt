@@ -39,6 +39,7 @@ class DuckItListViewModelImpl @Inject constructor(
         compositeJob + coroutineDispatchers.main + exceptionHandler + SupervisorJob()
 
     private val duckItListState = mutableStateOf<DuckItListState>(DuckItListState.LoadingState)
+
     private val snackbarState = mutableStateOf<DuckItSnackbarState>(DuckItSnackbarState.Idle)
 
     private val tag = DuckItListViewModelImpl::class.java.simpleName
@@ -112,7 +113,7 @@ class DuckItListViewModelImpl @Inject constructor(
         }
     }
 
-    override fun resetErrorState() {
+    override fun resetSnackbarState() {
         snackbarState.value = DuckItSnackbarState.Idle
     }
 

@@ -107,7 +107,7 @@ fun DuckItListSnackbar(
     LaunchedEffect(key1 = message) {
         coroutineScope.launch {
             snackbarHostState.showSnackbar(message = message)
-            duckItListViewModel.resetErrorState()
+            duckItListViewModel.resetSnackbarState()
         }
     }
 }
