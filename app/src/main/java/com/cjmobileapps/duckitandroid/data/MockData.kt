@@ -11,9 +11,11 @@ object MockData {
         password = "password"
     )
 
-    private val mockToken = TokenResponse(
-        token = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2huc21pdGhAZHVja2l0LmNvbSJ9.F0v_iQya0HIxUroq6Z-CsIqePbLvHCUoyvVHSfpO1vsXSpDdFa9OfXE6vtrVgcnOykVIB8A0yJoGZuB83mmfOQ"
+    const val mockToken = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2huc21pdGhAZHVja2l0LmNvbSJ9.F0v_iQya0HIxUroq6Z-CsIqePbLvHCUoyvVHSfpO1vsXSpDdFa9OfXE6vtrVgcnOykVIB8A0yJoGZuB83mmfOQ"
+
+    private val mockTokenResponse = TokenResponse(
+        token = mockToken
     )
 
-    val mockTokenResponseSuccess: Response<TokenResponse> = Response.success(mockToken)
+    val mockTokenResponseSuccess: Response<TokenResponse> = Response.success(mockTokenResponse)
 }

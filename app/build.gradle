@@ -28,6 +28,7 @@ android {
             applicationIdSuffix '.debug'
             debuggable true
             minifyEnabled false
+            // IMPORTANT: If testCoverageEnabled and Unit test break you can not see errors
             testCoverageEnabled true
         }
         release {
