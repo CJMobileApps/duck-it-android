@@ -19,12 +19,12 @@ class AccountUseCase(
 
     var isUserLoggedIn = false
 
-    var token = ""
+    var authorizationToken = ""
 
     suspend fun initDuckItTokenFlow(onIsUserLoggedIn: (isUserLoggedIn: Boolean) -> Unit) {
         accountRepository.duckItTokenFlow().collectLatest { token ->
             if (token.isNotEmpty()) {
-                this.token = token
+                this.authorizationToken = token
                 isUserLoggedIn = true
                 onIsUserLoggedIn.invoke(true)
             } else {
@@ -109,7 +109,7 @@ class AccountUseCase(
         accountState: AccountState
     ): ResponseWrapper<AccountState> {
         accountRepository.addDuckItToken(token.token)
-        this.token = token.token
+        this.authorizationToken = token.token
         isUserLoggedIn = true
         return ResponseWrapper(data = accountState)
     }
