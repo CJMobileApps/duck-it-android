@@ -112,7 +112,7 @@ jobs:
                until [ $n -gt $MAX_TRIES ]
                do
                   echo "Starting test attempt $n"
-                  ./gradlew createDevDebugCoverageReport && break
+                  ./gradlew createDevDebugCoverageReport && break 
                   n=$[$n+1]
                   sleep 5
                done
@@ -136,7 +136,7 @@ jobs:
       - store_test_results:
           path: ~/test-results/androidTest
       - codecov/upload:
-          file: app/build/reports/coverage/androidTest/dev/debug/connected/index.html
+          file: app/build/reports/coverage/androidTest/dev/debug/connected/index.html #TODO figure out how to get xml instead of just html
 workflows:
   test-and-build:
     jobs:

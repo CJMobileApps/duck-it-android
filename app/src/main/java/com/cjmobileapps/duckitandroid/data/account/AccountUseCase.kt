@@ -71,7 +71,7 @@ class AccountUseCase(
         removeDuckItToken()
     }
 
-    suspend fun signUp(emailPasswordRequest: EmailPasswordRequest): ResponseWrapper<AccountState>? {
+    private suspend fun signUp(emailPasswordRequest: EmailPasswordRequest): ResponseWrapper<AccountState>? {
         var responseWrapper: ResponseWrapper<AccountState>? = null
 
         accountRepository.signUp(emailPasswordRequest)
