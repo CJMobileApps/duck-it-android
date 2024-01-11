@@ -101,6 +101,7 @@ class AccountUseCase(
 
     private suspend fun removeDuckItToken() {
         accountRepository.removeDuckItToken()
+        this.authorizationToken = ""
         isUserLoggedIn = false
     }
 

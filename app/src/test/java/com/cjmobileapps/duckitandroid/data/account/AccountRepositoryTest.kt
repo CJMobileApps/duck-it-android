@@ -94,12 +94,12 @@ class AccountRepositoryTest : BaseTest() {
     fun `duckItTokenFlow return token happy flow success`() = runBlocking {
 
         // given
-        val mockLocationCoordinateFlow: Flow<String> = flow {
+        val mockDuckItTokenFlow: Flow<String> = flow {
             emit(MockData.mockToken)
         }
 
         // when
-        Mockito.`when`(mockDuckItLocalDataSource.duckItTokenFlow).thenReturn(mockLocationCoordinateFlow)
+        Mockito.`when`(mockDuckItLocalDataSource.duckItTokenFlow).thenReturn(mockDuckItTokenFlow)
 
 
         // then
