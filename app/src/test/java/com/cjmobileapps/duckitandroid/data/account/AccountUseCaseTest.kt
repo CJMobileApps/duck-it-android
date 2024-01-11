@@ -39,8 +39,8 @@ class AccountUseCaseTest : BaseTest() {
 
         // verify authorization token is empty
         Assertions.assertEquals(
-            accountUseCase.authorizationToken,
-            ""
+            "",
+            accountUseCase.authorizationToken
         )
 
         // given token flow
@@ -58,8 +58,8 @@ class AccountUseCaseTest : BaseTest() {
 
         // verify signInResponse
         Assertions.assertEquals(
-            signInResponse,
-            MockData.mockAccountStateAccountSignedInResponseWrapper
+            MockData.mockAccountStateAccountSignedInResponseWrapper,
+            signInResponse
         )
     }
 
@@ -79,8 +79,8 @@ class AccountUseCaseTest : BaseTest() {
 
         // verify authorization token is empty
         Assertions.assertEquals(
-            accountUseCase.authorizationToken,
-            ""
+            "",
+            accountUseCase.authorizationToken
         )
 
         // when
@@ -94,10 +94,11 @@ class AccountUseCaseTest : BaseTest() {
 
         // verify signInResponse error
         Assertions.assertEquals(
-            signInResponse,
-            MockData.mockAccountStateErrorPasswordIncorrectResponseWrapper
+            MockData.mockAccountStateErrorPasswordIncorrectResponseWrapper,
+            signInResponse
         )
     }
+
     @Test
     fun `user not signed in then try to signIn then return generic response error`() = runBlocking {
 
@@ -114,8 +115,8 @@ class AccountUseCaseTest : BaseTest() {
 
         // verify authorization token is empty
         Assertions.assertEquals(
-            accountUseCase.authorizationToken,
-            ""
+            "",
+            accountUseCase.authorizationToken
         )
 
 
@@ -130,8 +131,8 @@ class AccountUseCaseTest : BaseTest() {
 
         // verify signInResponse error
         Assertions.assertEquals(
-            signInResponse,
-            MockData.mockAccountStateGenericErrorResponseWrapper
+            MockData.mockAccountStateGenericErrorResponseWrapper,
+            signInResponse
         )
     }
 
@@ -151,8 +152,8 @@ class AccountUseCaseTest : BaseTest() {
 
         // verify authorization token is empty
         Assertions.assertEquals(
-            accountUseCase.authorizationToken,
-            ""
+            "",
+            accountUseCase.authorizationToken
         )
 
         // when
@@ -161,55 +162,54 @@ class AccountUseCaseTest : BaseTest() {
         Mockito.`when`(mockAccountRepository.signUp(MockData.mockEmailPasswordRequest))
             .thenReturn(MockData.mockTokenResponseSuccess)
 
-
         // then sign in
         val signInResponse = accountUseCase.signIn(MockData.mockEmailPasswordRequest)
 
-
         // verify signInResponse
         Assertions.assertEquals(
-            signInResponse,
-            MockData.mockAccountStateAccountCreatedResponseWrapper
+            MockData.mockAccountStateAccountCreatedResponseWrapper,
+            signInResponse
         )
     }
 
     @Test
-    fun `user signIn account not found then create account account already exists error`() = runBlocking {
+    fun `user signIn account not found then create account account already exists error`() =
+        runBlocking {
 
-        // given empty token flow
-        val mockDuckItTokenFlowEmpty: Flow<String> = flow {
-            emit("")
+            // given empty token flow
+            val mockDuckItTokenFlowEmpty: Flow<String> = flow {
+                emit("")
+            }
+
+            // when token flow called
+            Mockito.`when`(mockAccountRepository.duckItTokenFlow())
+                .thenReturn(mockDuckItTokenFlowEmpty)
+
+            // then setup AccountUserCase
+            setupAccountUseCase()
+
+            // verify authorization token is empty
+            Assertions.assertEquals(
+                "",
+                accountUseCase.authorizationToken
+            )
+
+            // when
+            Mockito.`when`(mockAccountRepository.signIn(MockData.mockEmailPasswordRequest))
+                .thenReturn(MockData.mockTokenResponseErrorHttpNotFound)
+            Mockito.`when`(mockAccountRepository.signUp(MockData.mockEmailPasswordRequest))
+                .thenReturn(MockData.mockTokenResponseErrorHttpConflict)
+
+            // then sign in
+            val signInResponse = accountUseCase.signIn(MockData.mockEmailPasswordRequest)
+
+
+            // verify signInResponse
+            Assertions.assertEquals(
+                MockData.mockAccountStateAccountAlreadyExistsResponseWrapper,
+                signInResponse
+            )
         }
-
-        // when token flow called
-        Mockito.`when`(mockAccountRepository.duckItTokenFlow()).thenReturn(mockDuckItTokenFlowEmpty)
-
-        // then setup AccountUserCase
-        setupAccountUseCase()
-
-        // verify authorization token is empty
-        Assertions.assertEquals(
-            accountUseCase.authorizationToken,
-            ""
-        )
-
-        // when
-        Mockito.`when`(mockAccountRepository.signIn(MockData.mockEmailPasswordRequest))
-            .thenReturn(MockData.mockTokenResponseErrorHttpNotFound)
-        Mockito.`when`(mockAccountRepository.signUp(MockData.mockEmailPasswordRequest))
-            .thenReturn(MockData.mockTokenResponseErrorHttpConflict)
-
-
-        // then sign in
-        val signInResponse = accountUseCase.signIn(MockData.mockEmailPasswordRequest)
-
-
-        // verify signInResponse
-        Assertions.assertEquals(
-            signInResponse,
-            MockData.mockAccountStateAccountAlreadyExistsResponseWrapper
-        )
-    }
 
     @Test
     fun `duckItTokenFlow empty then signIn then signOut`() = runBlocking {
@@ -226,15 +226,15 @@ class AccountUseCaseTest : BaseTest() {
         setupAccountUseCase()
         accountUseCase.initDuckItTokenFlow { isUserLoggedIn ->
             Assertions.assertEquals(
-                isUserLoggedIn,
-                false
+                false,
+                isUserLoggedIn
             )
         }
 
         // verify authorization token is empty and user not signed in
         Assertions.assertEquals(
-            accountUseCase.authorizationToken,
-            ""
+            "",
+            accountUseCase.authorizationToken
         )
         Assertions.assertFalse(accountUseCase.isUserLoggedIn)
 
@@ -252,22 +252,22 @@ class AccountUseCaseTest : BaseTest() {
         // then sign in
         accountUseCase.initDuckItTokenFlow { isUserLoggedIn ->
             Assertions.assertEquals(
-                isUserLoggedIn,
-                true
+                true,
+                isUserLoggedIn
             )
         }
         val signInResponse = accountUseCase.signIn(MockData.mockEmailPasswordRequest)
 
         // verify signInResponse
         Assertions.assertEquals(
-            signInResponse,
-            MockData.mockAccountStateAccountSignedInResponseWrapper
+            MockData.mockAccountStateAccountSignedInResponseWrapper,
+            signInResponse
         )
 
         // verify authorization token is not null
         Assertions.assertEquals(
-            accountUseCase.authorizationToken,
-            MockData.mockToken
+            MockData.mockToken,
+            accountUseCase.authorizationToken
         )
         Assertions.assertTrue(accountUseCase.isUserLoggedIn)
 
@@ -277,14 +277,14 @@ class AccountUseCaseTest : BaseTest() {
         // then sign out
         accountUseCase.initDuckItTokenFlow { isUserLoggedIn ->
             Assertions.assertEquals(
-                false,
-                isUserLoggedIn
+                isUserLoggedIn,
+                false
             )
         }
         accountUseCase.signOut()
         Assertions.assertEquals(
-            "",
-            accountUseCase.authorizationToken
+            accountUseCase.authorizationToken,
+            ""
         )
         Assertions.assertFalse(accountUseCase.isUserLoggedIn)
     }
@@ -298,21 +298,22 @@ class AccountUseCaseTest : BaseTest() {
         }
 
         // when token flow called
-        Mockito.`when`(mockAccountRepository.duckItTokenFlow()).thenReturn(mockDuckItTokenFlowValue1)
+        Mockito.`when`(mockAccountRepository.duckItTokenFlow())
+            .thenReturn(mockDuckItTokenFlowValue1)
 
         // then setup AccountUserCase
         setupAccountUseCase()
         accountUseCase.initDuckItTokenFlow { isUserLoggedIn ->
             Assertions.assertEquals(
-                isUserLoggedIn,
-                true
+                true,
+                isUserLoggedIn
             )
         }
 
         // verify authorization token is empty and user not signed in
         Assertions.assertEquals(
-            accountUseCase.authorizationToken,
-            MockData.mockToken
+            MockData.mockToken,
+            accountUseCase.authorizationToken
         )
         Assertions.assertTrue(accountUseCase.isUserLoggedIn)
 
@@ -327,14 +328,14 @@ class AccountUseCaseTest : BaseTest() {
         // then sign out
         accountUseCase.initDuckItTokenFlow { isUserLoggedIn ->
             Assertions.assertEquals(
-                false,
-                isUserLoggedIn
+                isUserLoggedIn,
+                false
             )
         }
         accountUseCase.signOut()
         Assertions.assertEquals(
-            "",
-            accountUseCase.authorizationToken
+            accountUseCase.authorizationToken,
+            ""
         )
         Assertions.assertFalse(accountUseCase.isUserLoggedIn)
     }
