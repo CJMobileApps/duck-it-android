@@ -1,6 +1,8 @@
 package com.cjmobileapps.duckitandroid.hilt.module
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import com.cjmobileapps.duckitandroid.data.account.AccountRepository
 import com.cjmobileapps.duckitandroid.data.account.AccountRepositoryImpl
 import com.cjmobileapps.duckitandroid.data.account.AccountUseCase
@@ -37,11 +39,19 @@ class DataModule {
 
     @Singleton
     @Provides
-    fun duckItLocalDataSource(
+    fun duckDuckItDataStorePreferences(
         duckItDataStore: DuckItDataStore
+    ): DataStore<Preferences> {
+        return duckItDataStore.dataStore
+    }
+
+    @Singleton
+    @Provides
+    fun duckItLocalDataSource(
+        duckDuckItDataStorePreferences: DataStore<Preferences>
     ): DuckItLocalDataSource {
         return DuckItLocalDataSource(
-            duckItDataStore = duckItDataStore
+            duckDuckItDataStorePreferences = duckDuckItDataStorePreferences
         )
     }
 
