@@ -3,6 +3,7 @@ package com.cjmobileapps.duckitandroid.data.account
 import com.cjmobileapps.duckitandroid.data.MockData
 import com.cjmobileapps.duckitandroid.testutil.BaseTest
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
@@ -16,6 +17,9 @@ class AccountUseCaseTest : BaseTest() {
 
     @Mock
     lateinit var mockAccountRepository: AccountRepository
+
+    @Mock
+    lateinit var mockStringFlow: Flow<String>
 
     private fun setupAccountUseCase() {
         accountUseCase = AccountUseCase(
@@ -385,5 +389,21 @@ class AccountUseCaseTest : BaseTest() {
         Mockito.verify(mockAccountRepository, Mockito.times(2))
             .duckItTokenFlow()
         Assertions.assertFalse(accountUseCase.isUserLoggedIn)
+    }
+
+    @Test
+    fun `initDuckItTokenFlow success`() = runBlocking {
+
+        // when
+        Mockito.`when`(mockAccountRepository.duckItTokenFlow()).thenReturn(mockStringFlow)
+        Mockito.`when`(mockStringFlow.collectLatest { }).thenReturn(Unit)
+
+        //setup
+        setupAccountUseCase()
+        accountUseCase.initDuckItTokenFlow {
+
+            // verify
+            Assertions.assertFalse(it)
+        }
     }
 }
