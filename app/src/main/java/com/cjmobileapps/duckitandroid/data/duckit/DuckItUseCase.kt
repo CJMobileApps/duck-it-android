@@ -21,11 +21,11 @@ class DuckItUseCase(
     suspend fun newPost(newPost: NewPostRequest): ResponseWrapper<Boolean> {
         var responseWrapper: ResponseWrapper<Boolean> = ResponseWrapper()
 
-        if (accountUseCase.isUserLoggedIn && accountUseCase.token.isEmpty()) {
+        if (accountUseCase.isUserLoggedIn && accountUseCase.authorizationToken.isEmpty()) {
             return ResponseWrapper(error = Error(isError = true, message = "Account Not Logged In"))
         }
 
-        val authorizationToken = NetworkConstants.BEARER + accountUseCase.token
+        val authorizationToken = NetworkConstants.BEARER + accountUseCase.authorizationToken
 
         duckItRepository.newPost(newPost = newPost, authorizationToken = authorizationToken)
             .onSuccess {

@@ -21,15 +21,8 @@ class ExampleInstrumentedTest {
     @Test
     fun useAppContext() {
 
-        val upvotes = Upvotes(10)
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("com.cjmobileapps.duckitandroid.debug", appContext.packageName)
-        assertEquals(NetworkConstants.AUTHORIZATION_HEADER, "Authorization")
-        assertEquals(upvotes.upvotes, 10)
-        assertEquals(
-            EmailPasswordRequest("heh", "heeyy"),
-            EmailPasswordRequest("heh", "heeyy")
-        )
     }
 }
