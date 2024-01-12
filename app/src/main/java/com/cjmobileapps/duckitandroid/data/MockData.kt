@@ -69,6 +69,13 @@ object MockData {
         )
     )
 
+    val mockAccountStateGenericErrorNoMessageResponseWrapper = ResponseWrapper<AccountState>(
+        error = Error(
+            isError = true,
+            message = ""
+        )
+    )
+
     val mockAccountStateAccountAlreadyExistsResponseWrapper = ResponseWrapper<AccountState>(
         error = Error(
             isError = true,
