@@ -50,6 +50,11 @@ object MockData {
         "There was a problem".toResponseBody("text/plain;charset=UTF-8".toMediaType())
     )
 
+    val mockUnitErrorHttpNotFound: Response<Unit> = Response.error(
+        HttpURLConnection.HTTP_NOT_FOUND,
+        "There was a problem".toResponseBody("text/plain;charset=UTF-8".toMediaType())
+    )
+
     val mockTokenResponseErrorHttpConflict: Response<TokenResponse> = Response.error(
         HttpURLConnection.HTTP_CONFLICT,
         "There was a problem".toResponseBody("text/plain;charset=UTF-8".toMediaType())
@@ -59,7 +64,7 @@ object MockData {
 
     val mockDeferredTokenResponseSuccess = CompletableDeferred(mockTokenResponseSuccess)
 
-    val mockUnitResponseSuccess: Response<Unit> = Response.success(Unit)
+    val mockUnitResponseSuccess: Response<Unit> = Response.success(200, Unit!!)
 
     val mockDeferredUnitResponseSuccess = CompletableDeferred(mockUnitResponseSuccess)
 
@@ -96,6 +101,20 @@ object MockData {
         error = Error(
             isError = true,
             message = "Account Already Exists"
+        )
+    )
+
+    val mockAccountNotLoggedInResponseWrapper = ResponseWrapper<Boolean>(
+        error = Error(
+            isError = true,
+            message = "Account Not Logged In"
+        )
+    )
+
+    val mockAccountBooleanStateGenericErrorResponseWrapper = ResponseWrapper<Boolean>(
+        error = Error(
+            isError = true,
+            message = "There was a problem"
         )
     )
 
@@ -143,4 +162,8 @@ object MockData {
     val mockUpVotesResponseSuccess: Response<Upvotes> = Response.success(mockUpVotes)
 
     val mockDeferredUpVotesResponseSuccess = CompletableDeferred(mockUpVotesResponseSuccess)
+
+    val mockTrueResponseWrapper = ResponseWrapper(
+        data = true
+    )
 }
