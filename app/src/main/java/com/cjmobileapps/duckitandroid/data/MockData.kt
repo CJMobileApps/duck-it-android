@@ -64,7 +64,7 @@ object MockData {
 
     val mockDeferredTokenResponseSuccess = CompletableDeferred(mockTokenResponseSuccess)
 
-    val mockUnitResponseSuccess: Response<Unit> = Response.success(200, Unit!!)
+    val mockUnitResponseSuccess: Response<Unit> = Response.success(200, Unit)
 
     val mockDeferredUnitResponseSuccess = CompletableDeferred(mockUnitResponseSuccess)
 
