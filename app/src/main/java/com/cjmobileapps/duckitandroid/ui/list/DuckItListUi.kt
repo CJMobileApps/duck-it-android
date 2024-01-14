@@ -196,7 +196,7 @@ fun DuckItListLoadedUi(
                         modifier = Modifier.padding(
                             start = 16.dp,
                             end = 0.dp,
-                            top = 0.dp,
+                            top = 4.dp,
                             bottom = 16.dp
                         ),
                         text = item.headline ?: "",
