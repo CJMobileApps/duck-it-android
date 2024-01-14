@@ -18,8 +18,6 @@ TODO | Future Features
 * [ ] Android Compose Ui Previews
 * [ ] Dark Mode
 * [ ] Better theming overall
-* [ ] Add pull down refresh.
-* [ ] Look into add better Nav graph popping backstack
 * [ ] Make app more accessible / Usability
 * [ ] Tablets
 * [ ] Need a Ui designer to make it more pretty.
