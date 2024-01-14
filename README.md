@@ -11,16 +11,14 @@ Build Tools & Versions Used
 
 TODO | Future Features
 ----
+* [ ] This Android Gradle plugin (8.0.0) was tested up to compileSdk = 33. need one for 34
 * [ ] Add local datastore for duckit list. Room?
 * [ ] Add JUnit Test. You can never have enough Unit Test.
 * [ ] Add string constants example AccountUseCase
 * [ ] Add Espresso
 * [ ] Android Compose Ui Previews
-* [ ] Dark Mode
-* [ ] Better theming overall
 * [ ] Make app more accessible / Usability
 * [ ] Tablets
-* [ ] Need a Ui designer to make it more pretty.
 
 Screen shots and Video Walkthrough
 ----

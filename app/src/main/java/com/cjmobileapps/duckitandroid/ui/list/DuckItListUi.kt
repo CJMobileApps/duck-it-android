@@ -209,9 +209,9 @@ fun DuckItListLoadedUi(
                             .size(160.dp),
                         model = item.image,
                         contentDescription = stringResource(R.string.duck_image),
-                        fallback = painterResource(id = R.drawable.duck_svgrepo_com),
-                        placeholder = painterResource(id = R.drawable.duck_svgrepo_com),
-                        error = painterResource(id = R.drawable.duck_svgrepo_com)
+                        fallback = painterResource(id = R.drawable.duck),
+                        placeholder = painterResource(id = R.drawable.duck),
+                        error = painterResource(id = R.drawable.duck)
                     )
 
                     Row(
