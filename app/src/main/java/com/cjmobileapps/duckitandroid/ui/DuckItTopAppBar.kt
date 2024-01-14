@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -14,7 +14,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -48,13 +46,9 @@ fun DuckItTopAppBar(
 
     TopAppBar(
         modifier = Modifier.fillMaxWidth(),
-        colors = TopAppBarDefaults.mediumTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-        ),
         title = {
             Row(
-                modifier =
-                Modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .testTag(""),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -73,7 +67,7 @@ fun DuckItTopAppBar(
                         text = stringResource(id = R.string.app_name),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.titleLarge,
-                        color = Color.White
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 }
             }
@@ -82,9 +76,9 @@ fun DuckItTopAppBar(
             if (navController.previousBackStackEntry != null) {
                 IconButton(onClick = { navController.navigateUp() }) {
                     Icon(
-                        imageVector = Icons.Filled.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "",
-                        tint = Color.White
+                        tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
             }
@@ -97,7 +91,7 @@ fun DuckItTopAppBar(
                 Icon(
                     imageVector = Icons.Filled.MoreVert,
                     contentDescription = "",
-                    tint = Color.White
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
             DropdownMenu(
@@ -110,7 +104,7 @@ fun DuckItTopAppBar(
                             Text(
                                 text = if (isUserLoggedIn) stringResource(R.string.sign_out)
                                 else stringResource(R.string.log_in),
-                                color = Color.White
+                                color = MaterialTheme.colorScheme.onPrimary
                             )
                         },
                         onClick = {
@@ -124,7 +118,7 @@ fun DuckItTopAppBar(
                         text = {
                             Text(
                                 text = stringResource(R.string.create_new_post),
-                                color = Color.White
+                                color = MaterialTheme.colorScheme.onPrimary
                             )
                         },
                         onClick = {

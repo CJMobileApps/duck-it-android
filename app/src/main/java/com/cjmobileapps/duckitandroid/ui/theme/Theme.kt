@@ -17,22 +17,36 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = WeatherOrange,
-    secondary = WeatherOrange,
-    tertiary = WeatherOrange
+    primary = DuckItOrange,
+    secondary = DuckItOrange,
+    tertiary = DuckItOrange,
+    surface = DuckItOrange,
+    onPrimary = DuckItBlack
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = WeatherOrange,
-    secondary = WeatherOrange,
-    tertiary = WeatherOrange,
-    background = Color.White,
-    surface = WeatherOrange,
+
+    // A primary color is the color displayed most frequently across your app's screens and components.
+    primary = DuckItOrange,
+
+    // A secondary color provides more ways to accent and distinguish your product.
+    secondary = DuckItOrange,
+
+    // The tertiary key color is used to derive the roles of contrasting
+    // accents that can be used to balance primary and secondary colors or bring enhanced attention to an element.
+    tertiary = DuckItOrange,
+
+    // The background color appears behind scrollable content.
+    //background = Color.White,
+
+    // Surface colors affect the surfaces of components.
+    surface = DuckItOrange,
+
     onPrimary = Color.White,
     onSecondary = Color.White,
     onTertiary = Color.White,
-    onBackground = WeatherOrange,
-    onSurface = Color.Black
+    onBackground = DuckItBlack,
+    onSurface = DuckItBlack
 )
 
 @Composable
