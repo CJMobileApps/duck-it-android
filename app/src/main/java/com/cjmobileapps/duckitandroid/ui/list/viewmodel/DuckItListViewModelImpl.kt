@@ -48,27 +48,6 @@ class DuckItListViewModelImpl @Inject constructor(
 
     override fun getSnackbarState() = snackbarState.value
 
-    init {
-        viewModelScope.launch(coroutineContext) {
-
-            duckItUseCase.getPosts()
-                .onSuccess { posts ->
-                    duckItListState.value = DuckItListState.DuckItListLoadedState(
-                        posts = posts.posts.convertToStateObj()
-                    )
-
-                    viewModelScope.launch(coroutineContext) {
-                        accountUseCase.initDuckItTokenFlow(onIsUserLoggedIn = { isUserLoggedIn ->
-                            updateIsUserLoggedIn(isUserLoggedIn)
-                        })
-                    }
-                }
-                .onError { _, _ ->
-                    snackbarState.value = DuckItSnackbarState.UnableToGetDuckItListError()
-                }
-        }
-    }
-
     override fun upvote(postId: String) {
         val state = getState()
         if (state !is DuckItListState.DuckItListLoadedState) return
@@ -160,16 +139,43 @@ class DuckItListViewModelImpl @Inject constructor(
         return state.duckItListNavRouteUi.value
     }
 
+    override fun refresh() {
+        val state = getState()
+        if (state is DuckItListState.DuckItListLoadedState) {
+            state.isRefreshLoading.value = true
+        }
+
+        viewModelScope.launch(coroutineContext) {
+            duckItUseCase.getPosts()
+                .onSuccess { posts ->
+                    duckItListState.value = DuckItListState.DuckItListLoadedState(
+                        posts = posts.posts.convertToStateObj()
+                    )
+
+                    viewModelScope.launch(coroutineContext) {
+                        accountUseCase.initDuckItTokenFlow(onIsUserLoggedIn = { isUserLoggedIn ->
+                            updateIsUserLoggedIn(isUserLoggedIn)
+                        })
+                    }
+                }
+                .onError { _, _ ->
+                    duckItListState.value = DuckItListState.DuckItListLoadedState()
+                    snackbarState.value = DuckItSnackbarState.UnableToGetDuckItListError()
+                }
+        }
+    }
+
     sealed class DuckItListState {
 
         object LoadingState : DuckItListState()
 
         data class DuckItListLoadedState(
-            val posts: List<PostState>,
+            val posts: List<PostState> = emptyList(),
             val duckItListNavRouteUi: MutableState<DuckItListNavRouteUi> = mutableStateOf(
                 DuckItListNavRouteUi.Idle
             ),
-            val isUserLoggedIn: MutableState<Boolean> = mutableStateOf(false)
+            val isUserLoggedIn: MutableState<Boolean> = mutableStateOf(false),
+            val isRefreshLoading: MutableState<Boolean> = mutableStateOf(false)
         ) : DuckItListState()
     }
 
