@@ -21,4 +21,6 @@ interface DuckItListViewModel {
     fun getDuckItListNavRouteUiState(): DuckItListViewModelImpl.DuckItListNavRouteUi
 
     fun resetNavRouteUiToIdle()
+
+    fun refresh()
 }
