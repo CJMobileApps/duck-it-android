@@ -14,7 +14,6 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
 import java.net.HttpURLConnection
-import java.util.UUID
 
 object MockData {
 
@@ -79,7 +78,7 @@ object MockData {
     val mockAccountStateErrorPasswordIncorrectResponseWrapper = ResponseWrapper<AccountState>(
         error = Error(
             isError = true,
-            message = "Password Incorrect"
+            message = StringConstants.passwordIncorrect
         )
     )
 
@@ -100,14 +99,14 @@ object MockData {
     val mockAccountStateAccountAlreadyExistsResponseWrapper = ResponseWrapper<AccountState>(
         error = Error(
             isError = true,
-            message = "Account Already Exists"
+            message = StringConstants.accountAlreadyExists
         )
     )
 
     val mockAccountNotLoggedInResponseWrapper = ResponseWrapper<Boolean>(
         error = Error(
             isError = true,
-            message = "Account Not Logged In"
+            message = StringConstants.accountNotLoggedIn
         )
     )
 

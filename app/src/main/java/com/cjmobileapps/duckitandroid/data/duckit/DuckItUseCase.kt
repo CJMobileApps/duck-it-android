@@ -1,5 +1,6 @@
 package com.cjmobileapps.duckitandroid.data.duckit
 
+import com.cjmobileapps.duckitandroid.data.StringConstants
 import com.cjmobileapps.duckitandroid.data.account.AccountUseCase
 import com.cjmobileapps.duckitandroid.data.model.Error
 import com.cjmobileapps.duckitandroid.data.model.NewPostRequest
@@ -22,7 +23,12 @@ class DuckItUseCase(
         var responseWrapper: ResponseWrapper<Boolean> = ResponseWrapper()
 
         if (!accountUseCase.isUserLoggedIn || accountUseCase.authorizationToken.isEmpty()) {
-            return ResponseWrapper(error = Error(isError = true, message = "Account Not Logged In"))
+            return ResponseWrapper(
+                error = Error(
+                    isError = true,
+                    message = StringConstants.accountNotLoggedIn
+                )
+            )
         }
 
         val authorizationToken = NetworkConstants.BEARER + accountUseCase.authorizationToken

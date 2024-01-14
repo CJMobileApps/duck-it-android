@@ -1,5 +1,6 @@
 package com.cjmobileapps.duckitandroid.data.account
 
+import com.cjmobileapps.duckitandroid.data.StringConstants
 import com.cjmobileapps.duckitandroid.data.model.AccountState
 import com.cjmobileapps.duckitandroid.data.model.EmailPasswordRequest
 import com.cjmobileapps.duckitandroid.data.model.Error
@@ -48,13 +49,13 @@ class AccountUseCase(
                         ResponseWrapper(
                             error = Error(
                                 isError = true,
-                                message = "Password Incorrect"
+                                message = StringConstants.passwordIncorrect
                             )
                         )
                     }
 
                     HttpURLConnection.HTTP_NOT_FOUND -> {
-                        Timber.d(tag, "Account Not Found trying to create account")
+                        Timber.d(tag, StringConstants.accountNotFoundTryToCreateAccount)
                         signUp(emailPasswordRequest)
                     }
 
@@ -85,7 +86,7 @@ class AccountUseCase(
                         ResponseWrapper(
                             error = Error(
                                 isError = true,
-                                message = "Account Already Exists"
+                                message = StringConstants.accountAlreadyExists
                             )
                         )
                     }

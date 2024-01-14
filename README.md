@@ -13,7 +13,6 @@ TODO | Future Features
 ----
 * [ ] Add local datastore for duckit list. Room?
 * [ ] Add JUnit Test. You can never have enough Unit Test.
-* [ ] Add string constants example AccountUseCase
 * [ ] Add Espresso
 * [ ] Android Compose Ui Previews
 * [ ] Make app more accessible / Usability
