@@ -19,7 +19,9 @@ import androidx.core.view.WindowCompat
 private val DarkColorScheme = darkColorScheme(
     primary = WeatherOrange,
     secondary = WeatherOrange,
-    tertiary = WeatherOrange
+    tertiary = WeatherOrange,
+    surface = WeatherOrange,
+    onPrimary = Color.Black
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -35,7 +37,7 @@ private val LightColorScheme = lightColorScheme(
     tertiary = WeatherOrange,
 
     // The background color appears behind scrollable content.
-    background = Color.White,
+    //background = Color.White,
 
     // Surface colors affect the surfaces of components.
     surface = WeatherOrange,
