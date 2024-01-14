@@ -12,8 +12,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.ArrowUpward
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -252,7 +252,7 @@ fun DuckItListLoadedUi(
                     }
 
                     if (index < duckItListLoadedState.posts.lastIndex) {
-                        Divider()
+                        HorizontalDivider()
                     }
                 }
             })
