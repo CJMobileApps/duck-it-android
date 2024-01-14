@@ -23,15 +23,27 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
+
+    // A primary color is the color displayed most frequently across your app's screens and components.
     primary = WeatherOrange,
+
+    // A secondary color provides more ways to accent and distinguish your product.
     secondary = WeatherOrange,
+
+    // The tertiary key color is used to derive the roles of contrasting
+    // accents that can be used to balance primary and secondary colors or bring enhanced attention to an element.
     tertiary = WeatherOrange,
+
+    // The background color appears behind scrollable content.
     background = Color.White,
+
+    // Surface colors affect the surfaces of components.
     surface = WeatherOrange,
+
     onPrimary = Color.White,
     onSecondary = Color.White,
     onTertiary = Color.White,
-    onBackground = WeatherOrange,
+    onBackground = Color.Black,
     onSurface = Color.Black
 )
 

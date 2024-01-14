@@ -28,7 +28,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -42,7 +41,6 @@ import com.cjmobileapps.duckitandroid.ui.NavItem
 import com.cjmobileapps.duckitandroid.ui.list.viewmodel.DuckItListViewModel
 import com.cjmobileapps.duckitandroid.ui.list.viewmodel.DuckItListViewModelImpl
 import com.cjmobileapps.duckitandroid.ui.list.viewmodel.DuckItListViewModelImpl.DuckItListState.*
-import com.cjmobileapps.duckitandroid.ui.theme.WeatherOrange
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -100,8 +98,8 @@ fun DuckItListUi(
                     .padding(innerPadding)
                     .align(Alignment.TopCenter),
                 state = pullToRefreshState,
-                containerColor = Color.White,
-                contentColor = WeatherOrange
+                containerColor = MaterialTheme.colorScheme.onPrimary,
+                contentColor = MaterialTheme.colorScheme.primary
             )
         }
 
@@ -156,8 +154,6 @@ fun DuckItListLoadingUi(
     modifier: Modifier
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
-        //LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-
         Column(
             modifier = modifier
                 .fillMaxWidth()
@@ -167,7 +163,6 @@ fun DuckItListLoadingUi(
         ) {
             Text(
                 text = stringResource(R.string.no_ducks_found),
-                color = Color.Black,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -184,7 +179,6 @@ fun DuckItListLoadedUi(
     pullToRefreshState: PullToRefreshState
 ) {
     val posts = duckItListLoadedState.posts
-
 
     LazyColumn(modifier = modifier.fillMaxWidth()) {
         itemsIndexed(
@@ -206,7 +200,6 @@ fun DuckItListLoadedUi(
                             bottom = 16.dp
                         ),
                         text = item.headline ?: "",
-                        color = Color.Black,
                         style = MaterialTheme.typography.headlineSmall
                     )
 
@@ -230,14 +223,14 @@ fun DuckItListLoadedUi(
                         }) {
                             Icon(
                                 imageVector = Icons.Filled.ArrowUpward,
-                                contentDescription = stringResource(R.string.upvote_button)
+                                contentDescription = stringResource(R.string.upvote_button),
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         }
 
                         Text(
                             modifier = Modifier.padding(0.dp),
                             text = item.upvotes.value.toString(),
-                            color = Color.Black,
                             style = MaterialTheme.typography.headlineSmall
                         )
 
@@ -246,7 +239,8 @@ fun DuckItListLoadedUi(
                         }) {
                             Icon(
                                 imageVector = Icons.Filled.ArrowDownward,
-                                contentDescription = stringResource(R.string.downvote_button)
+                                contentDescription = stringResource(R.string.downvote_button),
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         }
                     }
