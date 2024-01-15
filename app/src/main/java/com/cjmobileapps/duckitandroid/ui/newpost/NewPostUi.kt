@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -28,7 +27,6 @@ import com.cjmobileapps.duckitandroid.ui.newpost.viewmodel.NewPostViewModelImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewPostUi(
     navController: NavController,
@@ -50,7 +48,8 @@ fun NewPostUi(
                 NewPostLoadedUi(
                     modifier = Modifier.padding(innerPadding),
                     newPostViewModel = newPostViewModel,
-                    navController = navController
+                    navController = navController,
+                    isLoading = newPostViewModel.isLoading()
                 )
             }
         }
@@ -95,16 +94,15 @@ fun NewPostSnackbar(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewPostLoadedUi(
     modifier: Modifier,
     newPostViewModel: NewPostViewModel,
-    navController: NavController
+    navController: NavController,
+    isLoading: Boolean
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
-        //todo add is loading
-        if (false) {
+        if (isLoading) {
             LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
         }
 

@@ -38,13 +38,13 @@ fun EmailPasswordUi(
     onPasswordValueChange: (text: String) -> Unit,
     loginButtonText: String,
     isLogInButtonEnabled: Boolean,
-    loginButtonClicked: () -> Unit
+    loginButtonClicked: () -> Unit,
+    showLoading: Boolean
 ) {
     var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
 
     Column(modifier = modifier.fillMaxWidth()) {
-        //todo add is loading
-        if (false) {
+        if (showLoading) {
             LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
         }
 

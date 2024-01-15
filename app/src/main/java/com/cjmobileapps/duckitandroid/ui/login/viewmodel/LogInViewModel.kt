@@ -27,4 +27,6 @@ interface LogInViewModel {
     fun resetNavRouteUiToIdle()
 
     fun userLoggedInState(): UserLoggedInState
+
+    fun isLoading(): Boolean
 }

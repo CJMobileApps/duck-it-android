@@ -27,4 +27,6 @@ interface NewPostViewModel {
     fun resetNavRouteUiToIdle()
 
     fun userLoggedInState(): UserLoggedInState
+
+    fun isLoading(): Boolean
 }

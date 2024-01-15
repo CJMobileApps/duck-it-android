@@ -30,6 +30,7 @@ class LogInViewModelImpl @Inject constructor(
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Timber.tag(tag)
             .e("coroutineExceptionHandler() error occurred: $throwable \n ${throwable.message}")
+        stopLoading()
         snackbarState.value = LoginSnackbarState.ShowGenericError()
     }
 
@@ -90,6 +91,7 @@ class LogInViewModelImpl @Inject constructor(
                 email = email,
                 password = password
             )
+            state.isLoading.value = true
 
             accountUseCase.signIn(emailPasswordRequest)
                 ?.onSuccess { accountState ->
@@ -98,10 +100,12 @@ class LogInViewModelImpl @Inject constructor(
                         AccountState.AccountCreated -> LoginSnackbarState.AccountCreated
                     }
 
+                    stopLoading()
                     snackbarState.value = loginSnackbarState
                     state.logInNavRouteUi.value = LogInNavRouteUi.GoToListScreenUi
                 }
                 ?.onError { error ->
+                    stopLoading()
                     snackbarState.value = LoginSnackbarState.ShowGenericError(error = error)
                 }
         }
@@ -126,12 +130,25 @@ class LogInViewModelImpl @Inject constructor(
 
     override fun userLoggedInState() = UserLoggedInState.DontShowUserLoggedIn
 
+    private fun stopLoading() {
+        val state = getState()
+        if (state !is LogInState.LogInLoadedState) return
+        state.isLoading.value = false
+    }
+
+    override fun isLoading(): Boolean {
+        val state = getState()
+        if (state !is LogInState.LogInLoadedState) return false
+        return state.isLoading.value
+    }
+
     sealed class LogInState {
 
         data class LogInLoadedState(
             val emailEditText: MutableState<String> = mutableStateOf(""),
             val passwordEditText: MutableState<String> = mutableStateOf(""),
-            val logInNavRouteUi: MutableState<LogInNavRouteUi> = mutableStateOf(LogInNavRouteUi.Idle)
+            val logInNavRouteUi: MutableState<LogInNavRouteUi> = mutableStateOf(LogInNavRouteUi.Idle),
+            val isLoading: MutableState<Boolean> = mutableStateOf(false)
         ) : LogInState()
     }
 

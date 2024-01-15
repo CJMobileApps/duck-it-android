@@ -1,7 +1,6 @@
 package com.cjmobileapps.duckitandroid.ui.login
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -19,7 +18,6 @@ import com.cjmobileapps.duckitandroid.ui.views.EmailPasswordUi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LogInUi(
     navController: NavController,
@@ -44,6 +42,7 @@ fun LogInUi(
                     navController = navController
                 )
             }
+            else -> {}
         }
 
         when (val state = logInViewModel.getSnackbarState()) {
@@ -74,6 +73,7 @@ fun LogInUi(
                     logInViewModel = logInViewModel
                 )
             }
+            else -> {}
         }
     }
 }
@@ -111,7 +111,8 @@ fun LogInLoadedUi(
         },
         loginButtonText = stringResource(R.string.log_in),
         isLogInButtonEnabled = logInViewModel.isLogInButtonEnabled(),
-        loginButtonClicked = { logInViewModel.loginButtonClicked() }
+        loginButtonClicked = { logInViewModel.loginButtonClicked() },
+        showLoading = logInViewModel.isLoading()
     )
 
     when (logInViewModel.getLogInNavRouteUiState()) {
@@ -124,5 +125,6 @@ fun LogInLoadedUi(
             }
             logInViewModel.resetNavRouteUiToIdle()
         }
+        else -> {}
     }
 }

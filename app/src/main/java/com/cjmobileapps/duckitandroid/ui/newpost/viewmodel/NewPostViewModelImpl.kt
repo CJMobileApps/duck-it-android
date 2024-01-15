@@ -31,6 +31,7 @@ class NewPostViewModelImpl @Inject constructor(
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Timber.tag(tag)
             .e("coroutineExceptionHandler() error occurred: $throwable \n ${throwable.message}")
+        stopLoading()
         snackbarState.value = NewPostSnackbarState.ShowGenericError()
     }
 
@@ -86,6 +87,8 @@ class NewPostViewModelImpl @Inject constructor(
 
             if (headline.isEmpty() || imageUrl.isEmpty()) return@launch
 
+            state.isLoading.value = true
+
             val newPost = NewPostRequest(
                 headline = headline,
                 image = imageUrl
@@ -96,10 +99,12 @@ class NewPostViewModelImpl @Inject constructor(
                 .onSuccess {
                     if (it) {
                         snackbarState.value = NewPostSnackbarState.NewPostCreated
+                        stopLoading()
                         state.newPostNavRouteUi.value = NewPostNavRouteUi.GoToLogInScreenUi
                     }
                 }
                 .onError { error ->
+                    stopLoading()
                     snackbarState.value = NewPostSnackbarState.ShowGenericError(error = error)
                 }
 
@@ -124,6 +129,18 @@ class NewPostViewModelImpl @Inject constructor(
 
     override fun userLoggedInState() = UserLoggedInState.DontShowUserLoggedIn
 
+    override fun isLoading(): Boolean {
+        val state = getState()
+        if (state !is NewPostState.NewPostLoadedState) return false
+        return state.isLoading.value
+    }
+
+    private fun stopLoading() {
+        val state = getState()
+        if (state !is NewPostState.NewPostLoadedState) return
+        state.isLoading.value = false
+    }
+
     private fun updateIsUserLoggedIn(isUserLoggedIn: Boolean) {
         val state = getState()
         if (state !is NewPostState.NewPostLoadedState) return
@@ -146,7 +163,8 @@ class NewPostViewModelImpl @Inject constructor(
             val newPostNavRouteUi: MutableState<NewPostNavRouteUi> = mutableStateOf(
                 NewPostNavRouteUi.Idle
             ),
-            val isUserLoggedIn: MutableState<Boolean> = mutableStateOf(false)
+            val isUserLoggedIn: MutableState<Boolean> = mutableStateOf(false),
+            val isLoading: MutableState<Boolean> = mutableStateOf(false)
         ) : NewPostState()
     }
 
