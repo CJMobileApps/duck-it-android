@@ -86,7 +86,7 @@ fun DuckItTopAppBar(
         actions = {
             val isUserLoggedIn = (userLoggedInState == UserLoggedInState.UserLoggedIn)
 
-            if (currentRoute == NavItem.NewPost.navRoute) return@TopAppBar
+            if (currentRoute == NavItem.NewPost.navRoute || currentRoute == NavItem.LogIn.navRoute) return@TopAppBar
             IconButton(onClick = { menuExpanded = !menuExpanded }) {
                 Icon(
                     imageVector = Icons.Filled.MoreVert,
