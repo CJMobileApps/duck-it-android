@@ -34,7 +34,9 @@ class DuckItUseCaseTest : BaseTest() {
 
         // then
         setupDuckItUseCase()
-        val getPostResponse = duckItUseCase.getPosts()
+        val getPostResponse = duckItUseCase.getPosts({
+
+        })
 
         // verify
         Assertions.assertEquals(

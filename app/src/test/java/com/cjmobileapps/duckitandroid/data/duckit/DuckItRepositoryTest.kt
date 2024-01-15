@@ -2,6 +2,7 @@ package com.cjmobileapps.duckitandroid.data.duckit
 
 import com.cjmobileapps.duckitandroid.data.MockData
 import com.cjmobileapps.duckitandroid.data.datasource.DuckItApiDataSource
+import com.cjmobileapps.duckitandroid.data.datasource.DuckItLocalDataSource
 import com.cjmobileapps.duckitandroid.testutil.BaseTest
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
@@ -16,9 +17,13 @@ class DuckItRepositoryTest : BaseTest() {
     @Mock
     lateinit var mockDuckItApiDataSource: DuckItApiDataSource
 
+    @Mock
+    lateinit var mockDuckItLocalDataSource: DuckItLocalDataSource
+
     private fun setupDuckItRepository() {
         duckItRepository = DuckItRepositoryImpl(
-            duckItApiDataSource = mockDuckItApiDataSource
+            duckItApiDataSource = mockDuckItApiDataSource,
+            duckItLocalDataSource = mockDuckItLocalDataSource
         )
     }
 

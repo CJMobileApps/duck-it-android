@@ -148,7 +148,7 @@ object MockData {
         )
     )
 
-    private val mockPosts = Posts(posts = mockPostList)
+    val mockPosts = Posts(posts = mockPostList)
 
     val mockPostResponseSuccess: Response<Posts> = Response.success(mockPosts)
 
