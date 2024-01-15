@@ -13,6 +13,9 @@ import com.cjmobileapps.duckitandroid.data.datasource.DuckItApiDataSource
 import com.cjmobileapps.duckitandroid.data.datasource.DuckItLocalDataSource
 import com.cjmobileapps.duckitandroid.data.datastore.DuckItDataStore
 import com.cjmobileapps.duckitandroid.network.DuckItApi
+import com.cjmobileapps.duckitandroid.room.DatabaseFactory
+import com.cjmobileapps.duckitandroid.room.DuckItDao
+import com.cjmobileapps.duckitandroid.room.DuckItDatabase
 import com.cjmobileapps.duckitandroid.util.coroutine.CoroutineDispatchers
 import dagger.Module
 import dagger.Provides
@@ -48,20 +51,26 @@ class DataModule {
     @Singleton
     @Provides
     fun duckItLocalDataSource(
-        duckDuckItDataStorePreferences: DataStore<Preferences>
+        duckDuckItDataStorePreferences: DataStore<Preferences>,
+        duckItDao: DuckItDao,
+        coroutineDispatchers: CoroutineDispatchers
     ): DuckItLocalDataSource {
         return DuckItLocalDataSource(
-            duckDuckItDataStorePreferences = duckDuckItDataStorePreferences
+            duckDuckItDataStorePreferences = duckDuckItDataStorePreferences,
+            duckItDao = duckItDao,
+            coroutineDispatchers = coroutineDispatchers
         )
     }
 
     @Singleton
     @Provides
     fun duckItRepository(
-        duckItApiDataSource: DuckItApiDataSource
+        duckItApiDataSource: DuckItApiDataSource,
+        duckItLocalDataSource: DuckItLocalDataSource
     ): DuckItRepository {
         return DuckItRepositoryImpl(
-            duckItApiDataSource = duckItApiDataSource
+            duckItApiDataSource = duckItApiDataSource,
+            duckItLocalDataSource = duckItLocalDataSource
         )
     }
 
@@ -81,8 +90,9 @@ class DataModule {
     @Provides
     fun accountRepository(
         duckItApiDataSource: DuckItApiDataSource,
-        duckItLocalDataSource: DuckItLocalDataSource
-    ): AccountRepository {
+        duckItLocalDataSource: DuckItLocalDataSource,
+
+        ): AccountRepository {
         return AccountRepositoryImpl(
             duckItApiDataSource = duckItApiDataSource,
             duckItLocalDataSource = duckItLocalDataSource
@@ -105,5 +115,21 @@ class DataModule {
         @ApplicationContext context: Context
     ): DuckItDataStore {
         return DuckItDataStore(context)
+    }
+
+    @Singleton
+    @Provides
+    fun duckItDatabase(
+        @ApplicationContext context: Context
+    ): DuckItDatabase {
+        return DatabaseFactory.getDuckItDatabase(context)
+    }
+
+    @Singleton
+    @Provides
+    fun duckItDao(
+        duckItDatabase: DuckItDatabase
+    ): DuckItDao {
+        return duckItDatabase.duckItDao()
     }
 }
