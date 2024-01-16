@@ -11,7 +11,6 @@ Build Tools & Versions Used
 
 TODO | Future Features
 ----
-* [ ] Add local datastore for duckit list. Room?
 * [ ] Add JUnit Test. You can never have enough Unit Test.
 * [ ] Add Espresso
 * [ ] Android Compose Ui Previews
