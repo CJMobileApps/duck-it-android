@@ -36,7 +36,6 @@ class DuckItUseCase(
                     ResponseWrapper(data = true)
                 } catch (e: Exception) {
                     ResponseWrapper(error = Error(isError = true, message = e.message))
-
                 }
             }
             .onError { error, _ ->

@@ -36,14 +36,14 @@ class DuckItRepositoryTest : BaseTest() {
 
         //when
         Mockito.`when`(mockDuckItApiDataSource.getPosts())
-            .thenReturn(MockData.mockPostResponseSuccess)
+            .thenReturn(MockData.mockPostsResponseSuccess)
 
         //then
         setupDuckItRepository()
         val getPostResponse = duckItRepository.getPosts()
 
         // verify
-        Assertions.assertEquals(MockData.mockPostResponseSuccess, getPostResponse)
+        Assertions.assertEquals(MockData.mockPostsResponseSuccess, getPostResponse)
     }
 
     @Test

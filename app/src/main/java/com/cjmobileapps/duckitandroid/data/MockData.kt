@@ -150,9 +150,25 @@ object MockData {
 
     val mockPosts = Posts(posts = mockPostList)
 
-    val mockPostResponseSuccess: Response<Posts> = Response.success(mockPosts)
+    val mockPostsResponseSuccess: Response<Posts> = Response.success(mockPosts)
 
-    val mockDeferredPostResponseSuccess = CompletableDeferred(mockPostResponseSuccess)
+    val mockPostsResponseErrorHttpBadRequest: Response<Posts> = Response.error(
+        HttpURLConnection.HTTP_BAD_REQUEST,
+        "There was a problem".toResponseBody("text/plain;charset=UTF-8".toMediaType())
+    )
+
+    val mockDeferredPostsResponseSuccess = CompletableDeferred(mockPostsResponseSuccess)
+
+    val mockPostsResponseWrapper = ResponseWrapper(
+        data = mockPosts
+    )
+
+    val mockPostsResponseWrapperGenericError = ResponseWrapper<Posts>(
+        error = Error(
+            isError = true,
+            message = "There was a problem"
+        )
+    )
 
     val mockPostId = mockPostList.first().id!!
 
@@ -164,5 +180,12 @@ object MockData {
 
     val mockTrueResponseWrapper = ResponseWrapper(
         data = true
+    )
+
+    val mockBooleanResponseWrapperGenericError = ResponseWrapper<Boolean>(
+        error = Error(
+            isError = true,
+            message = "There was a problem"
+        )
     )
 }
