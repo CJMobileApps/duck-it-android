@@ -86,7 +86,7 @@ class DuckItApiDataSourceTest : BaseTest() {
 
         //when
         Mockito.`when`(mockDuckItApi.getPostsAsync())
-            .thenReturn(MockData.mockDeferredPostResponseSuccess)
+            .thenReturn(MockData.mockDeferredPostsResponseSuccess)
 
         // then
         setupDuckItApiDataSource()
@@ -94,7 +94,7 @@ class DuckItApiDataSourceTest : BaseTest() {
 
         // verify
         Assertions.assertEquals(
-            MockData.mockPostResponseSuccess,
+            MockData.mockPostsResponseSuccess,
             postsResponse
         )
     }
@@ -103,7 +103,8 @@ class DuckItApiDataSourceTest : BaseTest() {
     fun `upvote happy success flow`(): Unit = runBlocking {
 
         //when
-        Mockito.`when`(mockDuckItApi.upvoteAsync(MockData.mockPostId)).thenReturn(MockData.mockDeferredUpVotesResponseSuccess)
+        Mockito.`when`(mockDuckItApi.upvoteAsync(MockData.mockPostId))
+            .thenReturn(MockData.mockDeferredUpVotesResponseSuccess)
 
         // then
         setupDuckItApiDataSource()
@@ -120,7 +121,8 @@ class DuckItApiDataSourceTest : BaseTest() {
     fun `downvote happy success flow`(): Unit = runBlocking {
 
         //when
-        Mockito.`when`(mockDuckItApi.downvoteAsync(MockData.mockPostId)).thenReturn(MockData.mockDeferredUpVotesResponseSuccess)
+        Mockito.`when`(mockDuckItApi.downvoteAsync(MockData.mockPostId))
+            .thenReturn(MockData.mockDeferredUpVotesResponseSuccess)
 
         // then
         setupDuckItApiDataSource()

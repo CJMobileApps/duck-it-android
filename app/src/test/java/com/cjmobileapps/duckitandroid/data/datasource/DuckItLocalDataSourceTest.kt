@@ -4,7 +4,10 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.cjmobileapps.duckitandroid.data.MockData
 import com.cjmobileapps.duckitandroid.data.datastore.DuckItPreferencesKeys
+import com.cjmobileapps.duckitandroid.data.model.Posts
+import com.cjmobileapps.duckitandroid.room.DuckItDao
 import com.cjmobileapps.duckitandroid.testutil.BaseTest
+import com.cjmobileapps.duckitandroid.testutil.TestCoroutineDispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
@@ -25,19 +28,26 @@ class DuckItLocalDataSourceTest : BaseTest() {
     @Mock
     lateinit var mockPreferences: Preferences
 
+    @Mock
+    lateinit var mockDuckItDao: DuckItDao
+
     private fun setupDuckItLocalDataSource() {
         duckItLocalDataSource = DuckItLocalDataSource(
-            duckDuckItDataStorePreferences = mockDuckDuckItDataStorePreferences
+            duckDuckItDataStorePreferences = mockDuckDuckItDataStorePreferences,
+            duckItDao = mockDuckItDao,
+            coroutineDispatchers = TestCoroutineDispatchers
         )
     }
 
     @Test
     fun `duckItTokenFlow happy success flow`(): Unit = runBlocking {
 
-        //when
+        // given
         val mockPreferencesFlow: Flow<Preferences> = flow {
             emit(mockPreferences)
         }
+
+        // when
         Mockito.`when`(mockDuckDuckItDataStorePreferences.data).thenReturn(mockPreferencesFlow)
         Mockito.`when`(mockPreferences[DuckItPreferencesKeys.AUTHORIZATION_DUCKIT_TOKEN])
             .thenReturn(MockData.mockToken)
@@ -57,10 +67,12 @@ class DuckItLocalDataSourceTest : BaseTest() {
     @Test
     fun `duckItTokenFlow throw IOException`(): Unit = runBlocking {
 
-        //when
+        // given
         val mockPreferencesFlow: Flow<Preferences> = flow {
             throw IOException()
         }
+
+        // when
         Mockito.`when`(mockDuckDuckItDataStorePreferences.data).thenReturn(mockPreferencesFlow)
 
         // then
@@ -78,10 +90,12 @@ class DuckItLocalDataSourceTest : BaseTest() {
     @Test
     fun `duckItTokenFlow throw Exception`(): Unit = runBlocking {
 
-        //when
+        // given
         val mockPreferencesFlow: Flow<Preferences> = flow {
             throw Exception()
         }
+
+        // when
         Mockito.`when`(mockDuckDuckItDataStorePreferences.data).thenReturn(mockPreferencesFlow)
 
         // then
@@ -91,5 +105,43 @@ class DuckItLocalDataSourceTest : BaseTest() {
         } catch (e: Exception) {
             Assertions.assertTrue(true)
         }
+    }
+
+    @Test
+    fun `getDuckItPostsFlow happy success flow`(): Unit = runBlocking {
+
+        // given
+        val mockPostsFlow: Flow<Posts> = flow {
+            emit(MockData.mockPosts)
+        }
+        Mockito.`when`(mockDuckItDao.getPosts()).thenReturn(mockPostsFlow)
+
+        // then
+        setupDuckItLocalDataSource()
+        val duckItPosts = duckItLocalDataSource.getDuckItPostsFlow().first()
+
+        // verify
+        Mockito.verify(mockDuckItDao, Mockito.times(1)).getPosts()
+
+        Assertions.assertEquals(
+            duckItPosts,
+            MockData.mockPosts
+        )
+    }
+
+    @Test
+    fun `createDuckItPosts happy success flow`(): Unit = runBlocking {
+
+        // given
+        Mockito.`when`(mockDuckItDao.deletePosts()).thenReturn(Unit)
+        Mockito.`when`(mockDuckItDao.insertPosts(MockData.mockPosts)).thenReturn(Unit)
+
+        // then
+        setupDuckItLocalDataSource()
+        duckItLocalDataSource.createDuckItPosts(MockData.mockPosts)
+
+        // verify
+        Mockito.verify(mockDuckItDao, Mockito.times(1)).deletePosts()
+        Mockito.verify(mockDuckItDao, Mockito.times(1)).insertPosts(MockData.mockPosts)
     }
 }

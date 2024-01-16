@@ -9,6 +9,8 @@ import com.cjmobileapps.duckitandroid.data.duckit.DuckItUseCase
 import com.cjmobileapps.duckitandroid.data.model.PostState
 import com.cjmobileapps.duckitandroid.data.model.compose.UserLoggedInState
 import com.cjmobileapps.duckitandroid.data.model.convertToStateObj
+import com.cjmobileapps.duckitandroid.data.model.onError
+import com.cjmobileapps.duckitandroid.data.model.onSuccess
 import com.cjmobileapps.duckitandroid.util.coroutine.CoroutineDispatchers
 import com.cjmobileapps.duckitandroid.util.onError
 import com.cjmobileapps.duckitandroid.util.onSuccess
@@ -47,6 +49,30 @@ class DuckItListViewModelImpl @Inject constructor(
     override fun getState() = duckItListState.value
 
     override fun getSnackbarState() = snackbarState.value
+
+    init {
+        viewModelScope.launch(coroutineContext) {
+            duckItUseCase.getPosts { posts ->
+                posts
+                    .onSuccess {
+                        duckItListState.value = DuckItListState.DuckItListLoadedState(
+                            posts = posts.data?.posts?.convertToStateObj() ?: emptyList()
+                        )
+
+                        viewModelScope.launch(coroutineContext) {
+                            accountUseCase.initDuckItTokenFlow(onIsUserLoggedIn = { isUserLoggedIn ->
+                                updateIsUserLoggedIn(isUserLoggedIn)
+                            })
+                        }
+                    }
+                    .onError { _ ->
+                        duckItListState.value = DuckItListState.DuckItListLoadedState()
+                        snackbarState.value = DuckItSnackbarState.UnableToGetDuckItListError()
+                    }
+            }
+        }
+
+    }
 
     override fun upvote(postId: String) {
         val state = getState()
@@ -146,19 +172,8 @@ class DuckItListViewModelImpl @Inject constructor(
         }
 
         viewModelScope.launch(coroutineContext) {
-            duckItUseCase.getPosts()
-                .onSuccess { posts ->
-                    duckItListState.value = DuckItListState.DuckItListLoadedState(
-                        posts = posts.posts.convertToStateObj()
-                    )
-
-                    viewModelScope.launch(coroutineContext) {
-                        accountUseCase.initDuckItTokenFlow(onIsUserLoggedIn = { isUserLoggedIn ->
-                            updateIsUserLoggedIn(isUserLoggedIn)
-                        })
-                    }
-                }
-                .onError { _, _ ->
+            duckItUseCase.fetchPosts()
+                .onError { _ ->
                     duckItListState.value = DuckItListState.DuckItListLoadedState()
                     snackbarState.value = DuckItSnackbarState.UnableToGetDuckItListError()
                 }

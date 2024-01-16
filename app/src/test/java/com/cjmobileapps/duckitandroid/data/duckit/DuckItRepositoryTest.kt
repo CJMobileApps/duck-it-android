@@ -2,7 +2,12 @@ package com.cjmobileapps.duckitandroid.data.duckit
 
 import com.cjmobileapps.duckitandroid.data.MockData
 import com.cjmobileapps.duckitandroid.data.datasource.DuckItApiDataSource
+import com.cjmobileapps.duckitandroid.data.datasource.DuckItLocalDataSource
+import com.cjmobileapps.duckitandroid.data.model.Posts
 import com.cjmobileapps.duckitandroid.testutil.BaseTest
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -16,9 +21,13 @@ class DuckItRepositoryTest : BaseTest() {
     @Mock
     lateinit var mockDuckItApiDataSource: DuckItApiDataSource
 
+    @Mock
+    lateinit var mockDuckItLocalDataSource: DuckItLocalDataSource
+
     private fun setupDuckItRepository() {
         duckItRepository = DuckItRepositoryImpl(
-            duckItApiDataSource = mockDuckItApiDataSource
+            duckItApiDataSource = mockDuckItApiDataSource,
+            duckItLocalDataSource = mockDuckItLocalDataSource
         )
     }
 
@@ -27,14 +36,14 @@ class DuckItRepositoryTest : BaseTest() {
 
         //when
         Mockito.`when`(mockDuckItApiDataSource.getPosts())
-            .thenReturn(MockData.mockPostResponseSuccess)
+            .thenReturn(MockData.mockPostsResponseSuccess)
 
         //then
         setupDuckItRepository()
         val getPostResponse = duckItRepository.getPosts()
 
         // verify
-        Assertions.assertEquals(MockData.mockPostResponseSuccess, getPostResponse)
+        Assertions.assertEquals(MockData.mockPostsResponseSuccess, getPostResponse)
     }
 
     @Test
@@ -71,10 +80,12 @@ class DuckItRepositoryTest : BaseTest() {
     fun `newPost happy flow success`(): Unit = runBlocking {
 
         //when
-        Mockito.`when`(mockDuckItApiDataSource.newPost(
-            newPost = MockData.mockNewPostRequest,
-            authorizationToken = MockData.mockToken
-        )).thenReturn(MockData.mockUnitResponseSuccess)
+        Mockito.`when`(
+            mockDuckItApiDataSource.newPost(
+                newPost = MockData.mockNewPostRequest,
+                authorizationToken = MockData.mockToken
+            )
+        ).thenReturn(MockData.mockUnitResponseSuccess)
 
         //then
         setupDuckItRepository()
@@ -89,5 +100,42 @@ class DuckItRepositoryTest : BaseTest() {
             newPost = MockData.mockNewPostRequest,
             authorizationToken = MockData.mockToken
         )
+    }
+
+    @Test
+    fun `getDuckItPostsFlow happy flow success`(): Unit = runBlocking {
+
+        // when
+        val mockDuckItPostsFlow: Flow<Posts> = flow {
+            emit(MockData.mockPosts)
+        }
+        Mockito.`when`(mockDuckItLocalDataSource.getDuckItPostsFlow())
+            .thenReturn(mockDuckItPostsFlow)
+
+        // then
+        setupDuckItRepository()
+        val duckItPostsFlow = duckItRepository.getDuckItPostsFlow().first()
+
+        // verify
+        Assertions.assertEquals(
+            MockData.mockPosts,
+            duckItPostsFlow
+        )
+    }
+
+    @Test
+    fun `addDuckItPostsToDB happy flow success`(): Unit = runBlocking {
+
+        // when
+        Mockito.`when`(mockDuckItLocalDataSource.createDuckItPosts(MockData.mockPosts))
+            .thenReturn(Unit)
+
+        // then
+        setupDuckItRepository()
+        duckItRepository.addDuckItPostsToDB(MockData.mockPosts)
+
+        // verify
+        Mockito.verify(mockDuckItLocalDataSource, Mockito.times(1))
+            .createDuckItPosts(MockData.mockPosts)
     }
 }

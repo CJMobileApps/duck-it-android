@@ -42,7 +42,6 @@ fun LogInUi(
                     navController = navController
                 )
             }
-            else -> {}
         }
 
         when (val state = logInViewModel.getSnackbarState()) {
@@ -73,7 +72,6 @@ fun LogInUi(
                     logInViewModel = logInViewModel
                 )
             }
-            else -> {}
         }
     }
 }
@@ -125,6 +123,5 @@ fun LogInLoadedUi(
             }
             logInViewModel.resetNavRouteUiToIdle()
         }
-        else -> {}
     }
 }

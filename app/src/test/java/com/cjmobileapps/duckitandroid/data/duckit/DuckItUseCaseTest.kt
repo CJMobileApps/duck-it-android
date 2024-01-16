@@ -2,8 +2,11 @@ package com.cjmobileapps.duckitandroid.data.duckit
 
 import com.cjmobileapps.duckitandroid.data.MockData
 import com.cjmobileapps.duckitandroid.data.account.AccountUseCase
+import com.cjmobileapps.duckitandroid.data.model.Posts
 import com.cjmobileapps.duckitandroid.network.NetworkConstants
 import com.cjmobileapps.duckitandroid.testutil.BaseTest
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -27,21 +30,91 @@ class DuckItUseCaseTest : BaseTest() {
     }
 
     @Test
-    fun `getPosts happy success flow`(): Unit = runBlocking {
+    fun `fetchPosts happy success flow`(): Unit = runBlocking {
 
         // when
-        Mockito.`when`(mockDuckItRepository.getPosts()).thenReturn(MockData.mockPostResponseSuccess)
+        Mockito.`when`(mockDuckItRepository.getPosts())
+            .thenReturn(MockData.mockPostsResponseSuccess)
+        Mockito.`when`(mockDuckItRepository.addDuckItPostsToDB(MockData.mockPosts)).thenReturn(Unit)
+
 
         // then
         setupDuckItUseCase()
-        val getPostResponse = duckItUseCase.getPosts()
+        val postsResponse = duckItUseCase.fetchPosts()
 
         // verify
         Assertions.assertEquals(
-            MockData.mockPostResponseSuccess,
-            getPostResponse
+            MockData.mockTrueResponseWrapper,
+            postsResponse
+        )
+        Mockito.verify(mockDuckItRepository, Mockito.times(1))
+            .addDuckItPostsToDB(MockData.mockPosts)
+    }
+
+    @Test
+    fun `fetchPosts return onError flow`(): Unit = runBlocking {
+
+        // when
+        Mockito.`when`(mockDuckItRepository.getPosts())
+            .thenReturn(MockData.mockPostsResponseErrorHttpBadRequest)
+
+        // then
+        setupDuckItUseCase()
+        val postsResponse = duckItUseCase.fetchPosts()
+
+        // verify
+        Assertions.assertEquals(
+            MockData.mockBooleanResponseWrapperGenericError,
+            postsResponse
         )
     }
+
+    @Test
+    fun `getPosts happy success flow`(): Unit = runBlocking {
+
+        // given
+        val mockPostsFlow: Flow<Posts> = flow {
+            emit(MockData.mockPosts)
+        }
+
+        // when
+        Mockito.`when`(mockDuckItRepository.getDuckItPostsFlow()).thenReturn(mockPostsFlow)
+
+        // then
+        setupDuckItUseCase()
+        duckItUseCase.getPosts { posts ->
+
+            // verify
+            Assertions.assertEquals(
+                MockData.mockPostsResponseWrapper,
+                posts
+            )
+        }
+    }
+
+    @Test
+    fun `getPosts throw exception`(): Unit = runBlocking {
+
+        // given
+        val mockPostsFlow: Flow<Posts> = flow {
+            throw Exception("There was a problem")
+        }
+
+        // when
+        Mockito.`when`(mockDuckItRepository.getDuckItPostsFlow()).thenReturn(mockPostsFlow)
+
+        // then
+        setupDuckItUseCase()
+        duckItUseCase.getPosts { posts ->
+
+            // verify
+            Assertions.assertEquals(
+                MockData.mockPostsResponseWrapperGenericError,
+                posts
+            )
+        }
+    }
+
 
     @Test
     fun `upvote happy success flow`(): Unit = runBlocking {
