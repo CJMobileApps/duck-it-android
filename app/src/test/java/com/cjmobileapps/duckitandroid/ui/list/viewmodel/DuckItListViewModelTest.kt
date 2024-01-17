@@ -5,6 +5,7 @@ import com.cjmobileapps.duckitandroid.data.account.AccountUseCase
 import com.cjmobileapps.duckitandroid.data.duckit.DuckItUseCase
 import com.cjmobileapps.duckitandroid.data.model.Posts
 import com.cjmobileapps.duckitandroid.data.model.ResponseWrapper
+import com.cjmobileapps.duckitandroid.data.model.compose.UserLoggedInState
 import com.cjmobileapps.duckitandroid.testutil.BaseTest
 import com.cjmobileapps.duckitandroid.testutil.TestCoroutineDispatchers
 import kotlinx.coroutines.test.runTest
@@ -302,5 +303,47 @@ class DuckItListViewModelTest : BaseTest() {
         // verify
         Mockito.verify(mockDuckItUseCase, Mockito.times(1)).downvote(MockData.mockPostId)
         Assertions.assertTrue((snackbarState is DuckItListViewModelImpl.DuckItSnackbarState.DownvoteError))
+    }
+
+    @Test
+    fun `init getPosts throw CoroutineException then resetSnackbarState  flow`(): Unit = runTest {
+
+        // then init setup
+        setupDuckItListViewModel()
+        var duckItListState = duckItListViewModel.getState()
+
+        // verify in loading state
+        Assertions.assertTrue((duckItListState is DuckItListViewModelImpl.DuckItListState.LoadingState))
+
+        // when
+        given(mockDuckItUseCase.getPosts(postsResponseWrapperArgumentCaptor.capture())).willAnswer {
+            throw IOException("There was a problem")
+        }
+
+        // then
+        setupDuckItListViewModel()
+        duckItListState = duckItListViewModel.getState()
+        var snackbarState = duckItListViewModel.getSnackbarState()
+
+        // verify
+        Assertions.assertTrue((duckItListState is DuckItListViewModelImpl.DuckItListState.LoadingState))
+        Assertions.assertTrue((snackbarState is DuckItListViewModelImpl.DuckItSnackbarState.ShowGenericError))
+
+        // then resetSnackbarState()
+        duckItListViewModel.resetSnackbarState()
+        snackbarState = duckItListViewModel.getSnackbarState()
+
+        // verify
+        Assertions.assertTrue(snackbarState is DuckItListViewModelImpl.DuckItSnackbarState.Idle)
+    }
+
+    @Test
+    fun `init starts with not being logged in flow`(): Unit = runTest {
+        // then
+        setupDuckItListViewModel()
+        val userLoggedInState = duckItListViewModel.userLoggedInState()
+
+        // verify
+        Assertions.assertTrue(userLoggedInState == UserLoggedInState.UserLoggedOut)
     }
 }
