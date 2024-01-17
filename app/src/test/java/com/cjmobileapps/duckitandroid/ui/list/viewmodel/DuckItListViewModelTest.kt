@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.given
+import java.io.IOException
 
 class DuckItListViewModelTest : BaseTest() {
 
@@ -39,7 +41,7 @@ class DuckItListViewModelTest : BaseTest() {
     }
 
     @Test
-    fun `init happy flow`(): Unit = runTest {
+    fun `init getPosts onSuccess happy flow`(): Unit = runTest {
 
         // then init setup
         setupDuckItListViewModel()
@@ -91,5 +93,62 @@ class DuckItListViewModelTest : BaseTest() {
         }
 
         Assertions.assertTrue(duckItListState.isUserLoggedIn.value)
+    }
+
+    @Test
+    fun `init getPosts throw CoroutineException flow`(): Unit = runTest {
+
+        // then init setup
+        setupDuckItListViewModel()
+        var duckItListState = duckItListViewModel.getState()
+
+        // verify in loading state
+        Assertions.assertTrue((duckItListState is DuckItListViewModelImpl.DuckItListState.LoadingState))
+
+        // when
+        given(mockDuckItUseCase.getPosts(postsResponseWrapperArgumentCaptor.capture())).willAnswer {
+            throw IOException("There was a problem")
+        }
+
+        // then
+        setupDuckItListViewModel()
+        duckItListState = duckItListViewModel.getState()
+        val snackbarState = duckItListViewModel.getSnackbarState()
+
+        // verify
+        Assertions.assertTrue((duckItListState is DuckItListViewModelImpl.DuckItListState.LoadingState))
+        Assertions.assertTrue((snackbarState is DuckItListViewModelImpl.DuckItSnackbarState.ShowGenericError))
+    }
+
+    @Test
+    fun `init getPosts onError flow`(): Unit = runTest {
+
+        // then init setup
+        setupDuckItListViewModel()
+        var duckItListState = duckItListViewModel.getState()
+
+        // verify in loading state
+        Assertions.assertTrue((duckItListState is DuckItListViewModelImpl.DuckItListState.LoadingState))
+
+        // when
+        Mockito.`when`(mockDuckItUseCase.getPosts(postsResponseWrapperArgumentCaptor.capture()))
+            .thenReturn(Unit)
+
+        Mockito.`when`(
+            mockAccountUseCase.initDuckItTokenFlow(duckItTokenFlowResponseWrapperArgumentCaptor.capture())
+        )
+            .thenReturn(Unit)
+
+        // then
+        setupDuckItListViewModel()
+        postsResponseWrapperArgumentCaptor.firstValue.invoke(MockData.mockPostsResponseWrapperGenericError)
+        duckItListState = duckItListViewModel.getState()
+        val snackbarState = duckItListViewModel.getSnackbarState()
+
+        // verify
+        Assertions.assertTrue((duckItListState is DuckItListViewModelImpl.DuckItListState.DuckItListLoadedState))
+        if ((duckItListState !is DuckItListViewModelImpl.DuckItListState.DuckItListLoadedState)) return@runTest
+        Assertions.assertTrue(duckItListState.posts.isEmpty())
+        Assertions.assertTrue((snackbarState is DuckItListViewModelImpl.DuckItSnackbarState.UnableToGetDuckItListError))
     }
 }
