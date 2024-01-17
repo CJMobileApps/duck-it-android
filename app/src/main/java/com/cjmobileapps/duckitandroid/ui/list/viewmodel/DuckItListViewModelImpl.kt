@@ -57,9 +57,9 @@ class DuckItListViewModelImpl @Inject constructor(
         viewModelScope.launch(coroutineContext) {
             duckItUseCase.getPosts { posts ->
                 posts
-                    .onSuccess {
+                    .onSuccess { postsData ->
                         duckItListState.value = DuckItListState.DuckItListLoadedState(
-                            posts = posts.data?.posts?.convertToStateObj() ?: emptyList()
+                            posts = postsData.posts.convertToStateObj()
                         )
 
                         viewModelScope.launch(coroutineContextDuckItTokenFlow) {
