@@ -22,6 +22,7 @@ class DuckItUseCaseTest : BaseTest() {
 
     @Mock
     private lateinit var mockAccountUseCase: AccountUseCase
+
     private fun setupDuckItUseCase() {
         duckItUseCase = DuckItUseCase(
             duckItRepository = mockDuckItRepository,

@@ -40,6 +40,9 @@ class DuckItListViewModelImpl @Inject constructor(
     private val coroutineContext =
         compositeJob + coroutineDispatchers.main + exceptionHandler + SupervisorJob()
 
+    private val coroutineContextDuckItTokenFlow =
+        compositeJob + coroutineDispatchers.main + exceptionHandler + SupervisorJob()
+
     private val duckItListState = mutableStateOf<DuckItListState>(DuckItListState.LoadingState)
 
     private val snackbarState = mutableStateOf<DuckItSnackbarState>(DuckItSnackbarState.Idle)
@@ -59,7 +62,7 @@ class DuckItListViewModelImpl @Inject constructor(
                             posts = posts.data?.posts?.convertToStateObj() ?: emptyList()
                         )
 
-                        viewModelScope.launch(coroutineContext) {
+                        viewModelScope.launch(coroutineContextDuckItTokenFlow) {
                             accountUseCase.initDuckItTokenFlow(onIsUserLoggedIn = { isUserLoggedIn ->
                                 updateIsUserLoggedIn(isUserLoggedIn)
                             })
