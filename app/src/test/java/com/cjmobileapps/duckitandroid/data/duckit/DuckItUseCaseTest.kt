@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.kotlin.given
+import java.io.IOException
 
 class DuckItUseCaseTest : BaseTest() {
 
@@ -58,6 +60,27 @@ class DuckItUseCaseTest : BaseTest() {
         // when
         Mockito.`when`(mockDuckItRepository.getPosts())
             .thenReturn(MockData.mockPostsResponseErrorHttpBadRequest)
+
+        // then
+        setupDuckItUseCase()
+        val postsResponse = duckItUseCase.fetchPosts()
+
+        // verify
+        Assertions.assertEquals(
+            MockData.mockBooleanResponseWrapperGenericError,
+            postsResponse
+        )
+    }
+
+    @Test
+    fun `fetchPosts addDuckItPostsToDB throw exception flow`(): Unit = runTest {
+
+        // when
+        Mockito.`when`(mockDuckItRepository.getPosts())
+            .thenReturn(MockData.mockPostsResponseSuccess)
+        given(mockDuckItRepository.addDuckItPostsToDB(MockData.mockPosts)).willAnswer {
+            throw Exception("There was a problem")
+        }
 
         // then
         setupDuckItUseCase()
