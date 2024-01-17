@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.kotlin.given
-import java.io.IOException
 
 class DuckItUseCaseTest : BaseTest() {
 
@@ -102,7 +101,9 @@ class DuckItUseCaseTest : BaseTest() {
         }
 
         // when
-        Mockito.`when`(mockDuckItRepository.getDuckItPostsFlow()).thenReturn(mockPostsFlow)
+        given(mockDuckItRepository.getDuckItPostsFlow()).willAnswer {
+            mockPostsFlow
+        }
 
         // then
         setupDuckItUseCase()
