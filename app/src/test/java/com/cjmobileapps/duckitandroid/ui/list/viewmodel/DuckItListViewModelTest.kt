@@ -164,7 +164,7 @@ class DuckItListViewModelTest : BaseTest() {
         )
             .thenReturn(Unit)
         Mockito.`when`(mockDuckItUseCase.upvote(MockData.mockPostId)).thenReturn(MockData.mockUpVotesResponseSuccess)
-        Mockito.`when`(mockAccountUseCase.isUserLoggedIn).thenReturn(false)
+        Mockito.`when`(mockAccountUseCase.isUserLoggedIn).thenReturn(true)
 
         // then
         setupDuckItListViewModel()
@@ -173,7 +173,7 @@ class DuckItListViewModelTest : BaseTest() {
         duckItListViewModel.upvote(MockData.mockPostId)
 
         // verify
-        Mockito.verify(mockDuckItUseCase, Mockito.times(0)).upvote(MockData.mockPostId)
+        Mockito.verify(mockDuckItUseCase, Mockito.times(1)).upvote(MockData.mockPostId)
     }
 
     @Test
@@ -240,7 +240,7 @@ class DuckItListViewModelTest : BaseTest() {
         )
             .thenReturn(Unit)
         Mockito.`when`(mockDuckItUseCase.downvote(MockData.mockPostId)).thenReturn(MockData.mockUpVotesResponseSuccess)
-        Mockito.`when`(mockAccountUseCase.isUserLoggedIn).thenReturn(false)
+        Mockito.`when`(mockAccountUseCase.isUserLoggedIn).thenReturn(true)
 
         // then
         setupDuckItListViewModel()
@@ -249,7 +249,7 @@ class DuckItListViewModelTest : BaseTest() {
         duckItListViewModel.downvote(MockData.mockPostId)
 
         // verify
-        Mockito.verify(mockDuckItUseCase, Mockito.times(0)).downvote(MockData.mockPostId)
+        Mockito.verify(mockDuckItUseCase, Mockito.times(1)).downvote(MockData.mockPostId)
     }
 
     @Test
