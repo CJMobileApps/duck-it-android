@@ -7,7 +7,7 @@ import com.cjmobileapps.duckitandroid.network.NetworkConstants
 import com.cjmobileapps.duckitandroid.testutil.BaseTest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.Mock
@@ -31,7 +31,7 @@ class DuckItUseCaseTest : BaseTest() {
     }
 
     @Test
-    fun `fetchPosts happy success flow`(): Unit = runBlocking {
+    fun `fetchPosts happy success flow`(): Unit = runTest {
 
         // when
         Mockito.`when`(mockDuckItRepository.getPosts())
@@ -53,7 +53,7 @@ class DuckItUseCaseTest : BaseTest() {
     }
 
     @Test
-    fun `fetchPosts return onError flow`(): Unit = runBlocking {
+    fun `fetchPosts return onError flow`(): Unit = runTest {
 
         // when
         Mockito.`when`(mockDuckItRepository.getPosts())
@@ -71,7 +71,7 @@ class DuckItUseCaseTest : BaseTest() {
     }
 
     @Test
-    fun `getPosts happy success flow`(): Unit = runBlocking {
+    fun `getPosts happy success flow`(): Unit = runTest {
 
         // given
         val mockPostsFlow: Flow<Posts> = flow {
@@ -94,7 +94,7 @@ class DuckItUseCaseTest : BaseTest() {
     }
 
     @Test
-    fun `getPosts throw exception`(): Unit = runBlocking {
+    fun `getPosts throw exception`(): Unit = runTest {
 
         // given
         val mockPostsFlow: Flow<Posts> = flow {
@@ -118,7 +118,7 @@ class DuckItUseCaseTest : BaseTest() {
 
 
     @Test
-    fun `upvote happy success flow`(): Unit = runBlocking {
+    fun `upvote happy success flow`(): Unit = runTest {
 
         // when
         Mockito.`when`(mockDuckItRepository.upvote(MockData.mockPostId))
@@ -136,7 +136,7 @@ class DuckItUseCaseTest : BaseTest() {
     }
 
     @Test
-    fun `downvote happy success flow`(): Unit = runBlocking {
+    fun `downvote happy success flow`(): Unit = runTest {
 
         // when
         Mockito.`when`(mockDuckItRepository.downvote(MockData.mockPostId))
@@ -154,7 +154,7 @@ class DuckItUseCaseTest : BaseTest() {
     }
 
     @Test
-    fun `newPost happy success flow`(): Unit = runBlocking {
+    fun `newPost happy success flow`(): Unit = runTest {
 
         // when
         Mockito.`when`(mockAccountUseCase.isUserLoggedIn).thenReturn(true)
@@ -179,7 +179,7 @@ class DuckItUseCaseTest : BaseTest() {
     }
 
     @Test
-    fun `newPost user not logged in return error`(): Unit = runBlocking {
+    fun `newPost user not logged in return error`(): Unit = runTest {
 
         // when
         Mockito.`when`(mockAccountUseCase.isUserLoggedIn).thenReturn(false)
@@ -204,7 +204,7 @@ class DuckItUseCaseTest : BaseTest() {
     }
 
     @Test
-    fun `newPost user token empty return error`(): Unit = runBlocking {
+    fun `newPost user token empty return error`(): Unit = runTest {
 
         // when
         Mockito.`when`(mockAccountUseCase.isUserLoggedIn).thenReturn(true)
@@ -229,7 +229,7 @@ class DuckItUseCaseTest : BaseTest() {
     }
 
     @Test
-    fun `newPost throw generic error`(): Unit = runBlocking {
+    fun `newPost throw generic error`(): Unit = runTest {
 
         // when
         Mockito.`when`(mockAccountUseCase.isUserLoggedIn).thenReturn(true)

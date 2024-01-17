@@ -11,7 +11,7 @@ import com.cjmobileapps.duckitandroid.testutil.TestCoroutineDispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.Mock
@@ -40,7 +40,7 @@ class DuckItLocalDataSourceTest : BaseTest() {
     }
 
     @Test
-    fun `duckItTokenFlow happy success flow`(): Unit = runBlocking {
+    fun `duckItTokenFlow happy success flow`(): Unit = runTest {
 
         // given
         val mockPreferencesFlow: Flow<Preferences> = flow {
@@ -65,7 +65,7 @@ class DuckItLocalDataSourceTest : BaseTest() {
     }
 
     @Test
-    fun `duckItTokenFlow throw IOException`(): Unit = runBlocking {
+    fun `duckItTokenFlow throw IOException`(): Unit = runTest {
 
         // given
         val mockPreferencesFlow: Flow<Preferences> = flow {
@@ -88,7 +88,7 @@ class DuckItLocalDataSourceTest : BaseTest() {
     }
 
     @Test
-    fun `duckItTokenFlow throw Exception`(): Unit = runBlocking {
+    fun `duckItTokenFlow throw Exception`(): Unit = runTest {
 
         // given
         val mockPreferencesFlow: Flow<Preferences> = flow {
@@ -108,7 +108,7 @@ class DuckItLocalDataSourceTest : BaseTest() {
     }
 
     @Test
-    fun `getDuckItPostsFlow happy success flow`(): Unit = runBlocking {
+    fun `getDuckItPostsFlow happy success flow`(): Unit = runTest {
 
         // given
         val mockPostsFlow: Flow<Posts> = flow {
@@ -130,7 +130,7 @@ class DuckItLocalDataSourceTest : BaseTest() {
     }
 
     @Test
-    fun `createDuckItPosts happy success flow`(): Unit = runBlocking {
+    fun `createDuckItPosts happy success flow`(): Unit = runTest {
 
         // given
         Mockito.`when`(mockDuckItDao.deletePosts()).thenReturn(Unit)

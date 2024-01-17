@@ -8,7 +8,7 @@ import com.cjmobileapps.duckitandroid.testutil.BaseTest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.Mock
@@ -32,7 +32,7 @@ class DuckItRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun `getPosts happy flow success`() = runBlocking {
+    fun `getPosts happy flow success`() = runTest {
 
         //when
         Mockito.`when`(mockDuckItApiDataSource.getPosts())
@@ -47,7 +47,7 @@ class DuckItRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun `upvote happy flow success`() = runBlocking {
+    fun `upvote happy flow success`() = runTest {
 
         //when
         Mockito.`when`(mockDuckItApiDataSource.upvote(MockData.mockPostId))
@@ -62,7 +62,7 @@ class DuckItRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun `downvote happy flow success`() = runBlocking {
+    fun `downvote happy flow success`() = runTest {
 
         //when
         Mockito.`when`(mockDuckItApiDataSource.downvote(MockData.mockPostId))
@@ -77,7 +77,7 @@ class DuckItRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun `newPost happy flow success`(): Unit = runBlocking {
+    fun `newPost happy flow success`(): Unit = runTest {
 
         //when
         Mockito.`when`(
@@ -103,7 +103,7 @@ class DuckItRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun `getDuckItPostsFlow happy flow success`(): Unit = runBlocking {
+    fun `getDuckItPostsFlow happy flow success`(): Unit = runTest {
 
         // when
         val mockDuckItPostsFlow: Flow<Posts> = flow {
@@ -124,7 +124,7 @@ class DuckItRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun `addDuckItPostsToDB happy flow success`(): Unit = runBlocking {
+    fun `addDuckItPostsToDB happy flow success`(): Unit = runTest {
 
         // when
         Mockito.`when`(mockDuckItLocalDataSource.createDuckItPosts(MockData.mockPosts))

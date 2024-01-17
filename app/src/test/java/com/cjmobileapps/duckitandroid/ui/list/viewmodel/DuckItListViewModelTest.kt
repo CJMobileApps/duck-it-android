@@ -38,7 +38,6 @@ class DuckItListViewModelTest : BaseTest() {
         )
     }
 
-    //todo name everything runTest instead of runBlocking
     @Test
     fun `init happy flow`(): Unit = runTest {
 

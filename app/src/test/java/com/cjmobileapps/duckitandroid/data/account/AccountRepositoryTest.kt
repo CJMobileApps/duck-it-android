@@ -7,7 +7,7 @@ import com.cjmobileapps.duckitandroid.testutil.BaseTest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.Mock
@@ -31,7 +31,7 @@ class AccountRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun `signIn happy flow success`() = runBlocking {
+    fun `signIn happy flow success`() = runTest {
 
         //when
         Mockito.`when`(mockDuckItApiDataSource.signIn(MockData.mockEmailPasswordRequest))
@@ -46,7 +46,7 @@ class AccountRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun `signUp happy flow success`() = runBlocking {
+    fun `signUp happy flow success`() = runTest {
 
         //when
         Mockito.`when`(mockDuckItApiDataSource.signUp(MockData.mockEmailPasswordRequest))
@@ -61,7 +61,7 @@ class AccountRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun `addDuckItToken happy flow success`() = runBlocking {
+    fun `addDuckItToken happy flow success`() = runTest {
 
         //when
         Mockito.`when`(mockDuckItLocalDataSource.addDuckItToken(MockData.mockToken))
@@ -77,7 +77,7 @@ class AccountRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun `removeDuckItToken happy flow success`() = runBlocking {
+    fun `removeDuckItToken happy flow success`() = runTest {
 
         //when
         Mockito.`when`(mockDuckItLocalDataSource.removeDuckItToken()).thenReturn(Unit)
@@ -91,7 +91,7 @@ class AccountRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun `duckItTokenFlow return token happy flow success`() = runBlocking {
+    fun `duckItTokenFlow return token happy flow success`() = runTest {
 
         // given
         val mockDuckItTokenFlow: Flow<String> = flow {

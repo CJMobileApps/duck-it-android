@@ -4,7 +4,7 @@ import com.cjmobileapps.duckitandroid.data.MockData
 import com.cjmobileapps.duckitandroid.testutil.BaseTest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.Mock
@@ -24,7 +24,7 @@ class AccountUseCaseTest : BaseTest() {
     }
 
     @Test
-    fun `user not signed in then signIn then get token happy success flow`() = runBlocking {
+    fun `user not signed in then signIn then get token happy success flow`() = runTest {
 
         // given empty token flow
         val mockDuckItTokenFlowEmpty: Flow<String> = flow {
@@ -64,7 +64,7 @@ class AccountUseCaseTest : BaseTest() {
     }
 
     @Test
-    fun `user not signed in then try to signIn then return HTTP forbidden`() = runBlocking {
+    fun `user not signed in then try to signIn then return HTTP forbidden`() = runTest {
 
         // given empty token flow
         val mockDuckItTokenFlowEmpty: Flow<String> = flow {
@@ -100,7 +100,7 @@ class AccountUseCaseTest : BaseTest() {
     }
 
     @Test
-    fun `user not signed in then try to signIn then return generic response error`() = runBlocking {
+    fun `user not signed in then try to signIn then return generic response error`() = runTest {
 
         // given empty token flow
         val mockDuckItTokenFlowEmpty: Flow<String> = flow {
@@ -137,7 +137,7 @@ class AccountUseCaseTest : BaseTest() {
     }
 
     @Test
-    fun `user signIn account not found then create account success flow`() = runBlocking {
+    fun `user signIn account not found then create account success flow`() = runTest {
 
         // given empty token flow
         val mockDuckItTokenFlowEmpty: Flow<String> = flow {
@@ -174,7 +174,7 @@ class AccountUseCaseTest : BaseTest() {
 
     @Test
     fun `user signIn account not found then create account account already exists error`() =
-        runBlocking {
+        runTest {
 
             // given empty token flow
             val mockDuckItTokenFlowEmpty: Flow<String> = flow {
@@ -213,7 +213,7 @@ class AccountUseCaseTest : BaseTest() {
 
     @Test
     fun `user signIn account not found then create account some error exists`() =
-        runBlocking {
+        runTest {
 
             // given empty token flow
             val mockDuckItTokenFlowEmpty: Flow<String> = flow {
@@ -250,7 +250,7 @@ class AccountUseCaseTest : BaseTest() {
         }
 
     @Test
-    fun `duckItTokenFlow empty then signIn then signOut`() = runBlocking {
+    fun `duckItTokenFlow empty then signIn then signOut`() = runTest {
 
         // given empty token flow
         val mockDuckItTokenFlowEmpty: Flow<String> = flow {
@@ -333,7 +333,7 @@ class AccountUseCaseTest : BaseTest() {
     }
 
     @Test
-    fun `duckItTokenFlow has token already signed in then signOut`() = runBlocking {
+    fun `duckItTokenFlow has token already signed in then signOut`() = runTest {
 
         // given empty token flow
         val mockDuckItTokenFlowValue1: Flow<String> = flow {
