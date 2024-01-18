@@ -48,38 +48,32 @@ class LogInViewModelImpl @Inject constructor(
     override fun getSnackbarState() = snackbarState.value
 
     override fun getEmailEditText(): String {
-        val state = getState()
-        if (state !is LogInState.LogInLoadedState) return ""
+        val state = (getState() as LogInState.LogInLoadedState)
         return state.emailEditText.value
     }
 
     override fun updateEmailEditText(email: String) {
-        val state = getState()
-        if (state !is LogInState.LogInLoadedState) return
+        val state = (getState() as LogInState.LogInLoadedState)
         state.emailEditText.value = email
     }
 
     override fun getPasswordEditText(): String {
-        val state = getState()
-        if (state !is LogInState.LogInLoadedState) return ""
+        val state = (getState() as LogInState.LogInLoadedState)
         return state.passwordEditText.value
     }
 
     override fun updatePasswordEditText(password: String) {
-        val state = getState()
-        if (state !is LogInState.LogInLoadedState) return
+        val state = (getState() as LogInState.LogInLoadedState)
         state.passwordEditText.value = password
     }
 
     override fun isLogInButtonEnabled(): Boolean {
-        val state = getState()
-        if (state !is LogInState.LogInLoadedState) return false
+        val state = (getState() as LogInState.LogInLoadedState)
         return state.emailEditText.value.isNotEmpty() && state.passwordEditText.value.isNotEmpty()
     }
 
     override fun loginButtonClicked() {
-        val state = getState()
-        if (state !is LogInState.LogInLoadedState) return
+        val state = (getState() as LogInState.LogInLoadedState)
 
         viewModelScope.launch(coroutineContext) {
             val email = state.emailEditText.value
@@ -116,29 +110,24 @@ class LogInViewModelImpl @Inject constructor(
     }
 
     override fun getLogInNavRouteUiState(): LogInNavRouteUi {
-        val state = getState()
-        if (state !is LogInState.LogInLoadedState) return LogInNavRouteUi.Idle
-
+        val state = (getState() as LogInState.LogInLoadedState)
         return state.logInNavRouteUi.value
     }
 
     override fun resetNavRouteUiToIdle() {
-        val state = getState()
-        if (state !is LogInState.LogInLoadedState) return
+        val state = (getState() as LogInState.LogInLoadedState)
         state.logInNavRouteUi.value = LogInNavRouteUi.Idle
     }
 
     override fun userLoggedInState() = UserLoggedInState.DontShowUserLoggedIn
 
     private fun stopLoading() {
-        val state = getState()
-        if (state !is LogInState.LogInLoadedState) return
+        val state = (getState() as LogInState.LogInLoadedState)
         state.isLoading.value = false
     }
 
     override fun isLoading(): Boolean {
-        val state = getState()
-        if (state !is LogInState.LogInLoadedState) return false
+        val state = (getState() as LogInState.LogInLoadedState)
         return state.isLoading.value
     }
 
