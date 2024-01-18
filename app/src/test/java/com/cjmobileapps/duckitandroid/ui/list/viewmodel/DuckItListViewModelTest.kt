@@ -377,33 +377,73 @@ class DuckItListViewModelTest : BaseTest() {
     }
 
     @Test
-    fun `user logged in isUserLoggedInButtonClicked() then UserLoggedInState UserLoggedOut`(): Unit = runTest {
+    fun `user logged in isUserLoggedInButtonClicked() then UserLoggedInState UserLoggedOut`(): Unit =
+        runTest {
 
-        // when
-        Mockito.`when`(mockDuckItUseCase.getPosts(postsResponseWrapperArgumentCaptor.capture()))
-            .thenReturn(Unit)
+            // when
+            Mockito.`when`(mockDuckItUseCase.getPosts(postsResponseWrapperArgumentCaptor.capture()))
+                .thenReturn(Unit)
 
-        Mockito.`when`(
-            mockAccountUseCase.initDuckItTokenFlow(duckItTokenFlowResponseWrapperArgumentCaptor.capture())
-        )
-            .thenReturn(Unit)
-        Mockito.`when`(mockAccountUseCase.isUserLoggedIn).thenReturn(true)
+            Mockito.`when`(
+                mockAccountUseCase.initDuckItTokenFlow(duckItTokenFlowResponseWrapperArgumentCaptor.capture())
+            )
+                .thenReturn(Unit)
+            Mockito.`when`(mockAccountUseCase.isUserLoggedIn).thenReturn(true)
 
-        // then
-        setupDuckItListViewModel()
-        postsResponseWrapperArgumentCaptor.firstValue.invoke(MockData.mockPostsResponseWrapper)
-        duckItTokenFlowResponseWrapperArgumentCaptor.firstValue.invoke(true)
-        var userLoggedInState = duckItListViewModel.userLoggedInState()
+            // then
+            setupDuckItListViewModel()
+            postsResponseWrapperArgumentCaptor.firstValue.invoke(MockData.mockPostsResponseWrapper)
+            duckItTokenFlowResponseWrapperArgumentCaptor.firstValue.invoke(true)
+            var userLoggedInState = duckItListViewModel.userLoggedInState()
 
-        // verify
-        Assertions.assertTrue(userLoggedInState == UserLoggedInState.UserLoggedIn)
+            // verify
+            Assertions.assertTrue(userLoggedInState == UserLoggedInState.UserLoggedIn)
 
-        // then
-        duckItListViewModel.isUserLoggedInButtonClicked()
-        duckItTokenFlowResponseWrapperArgumentCaptor.firstValue.invoke(false)
-        userLoggedInState = duckItListViewModel.userLoggedInState()
+            // then
+            duckItListViewModel.isUserLoggedInButtonClicked()
+            duckItTokenFlowResponseWrapperArgumentCaptor.firstValue.invoke(false)
+            userLoggedInState = duckItListViewModel.userLoggedInState()
 
-        // verify
-        Assertions.assertTrue(userLoggedInState == UserLoggedInState.UserLoggedOut)
-    }
+            // verify
+            Assertions.assertTrue(userLoggedInState == UserLoggedInState.UserLoggedOut)
+        }
+
+    @Test
+    fun `user not logged in isUserLoggedInButtonClicked() then go to GoToLogInScreenUi then resetNavRouteUiToIdle`(): Unit =
+        runTest {
+
+            // when
+            Mockito.`when`(mockDuckItUseCase.getPosts(postsResponseWrapperArgumentCaptor.capture()))
+                .thenReturn(Unit)
+
+            Mockito.`when`(
+                mockAccountUseCase.initDuckItTokenFlow(duckItTokenFlowResponseWrapperArgumentCaptor.capture())
+            )
+                .thenReturn(Unit)
+            Mockito.`when`(mockAccountUseCase.isUserLoggedIn).thenReturn(false)
+
+            // then
+            setupDuckItListViewModel()
+            postsResponseWrapperArgumentCaptor.firstValue.invoke(MockData.mockPostsResponseWrapper)
+            duckItTokenFlowResponseWrapperArgumentCaptor.firstValue.invoke(false)
+            val userLoggedInState = duckItListViewModel.userLoggedInState()
+
+            // verify
+            Assertions.assertTrue(userLoggedInState == UserLoggedInState.UserLoggedOut)
+
+            // then
+            duckItListViewModel.isUserLoggedInButtonClicked()
+            duckItTokenFlowResponseWrapperArgumentCaptor.firstValue.invoke(false)
+            var duckItListNavRouteUiState = duckItListViewModel.getDuckItListNavRouteUiState()
+
+            // verify
+            Assertions.assertTrue(duckItListNavRouteUiState == DuckItListViewModelImpl.DuckItListNavRouteUi.GoToLogInScreenUi)
+
+            // then
+            duckItListViewModel.resetNavRouteUiToIdle()
+            duckItListNavRouteUiState = duckItListViewModel.getDuckItListNavRouteUiState()
+
+            // verify
+            Assertions.assertTrue(duckItListNavRouteUiState == DuckItListViewModelImpl.DuckItListNavRouteUi.Idle)
+        }
 }
