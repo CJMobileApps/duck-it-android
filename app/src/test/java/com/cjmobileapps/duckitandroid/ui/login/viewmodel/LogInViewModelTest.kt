@@ -63,7 +63,6 @@ class LogInViewModelTest : BaseTest() {
         Assertions.assertFalse(logInViewModel.isLogInButtonEnabled())
     }
 
-
     @Test
     fun `enable logInButtonEnabled then loginButtonClicked accountCreated`(): Unit = runTest {
 
@@ -100,5 +99,75 @@ class LogInViewModelTest : BaseTest() {
         Assertions.assertTrue(logInNavRouteUiState is LogInViewModelImpl.LogInNavRouteUi.GoToListScreenUi)
     }
 
+    @Test
+    fun `enable logInButtonEnabled then loginButtonClicked accountSignedIn`(): Unit = runTest {
 
+        // then
+        setupLogInViewModel()
+        logInViewModel.updateEmailEditText(MockData.mockEmailPasswordRequest.email)
+        logInViewModel.updatePasswordEditText(MockData.mockEmailPasswordRequest.password)
+
+        val email = logInViewModel.getEmailEditText()
+        val password = logInViewModel.getPasswordEditText()
+
+        // verify
+        Assertions.assertTrue(logInViewModel.isLogInButtonEnabled())
+        Assertions.assertEquals(
+            MockData.mockEmailPasswordRequest.email,
+            email
+        )
+        Assertions.assertEquals(
+            MockData.mockEmailPasswordRequest.password,
+            password
+        )
+
+        // when
+        Mockito.`when`(mockAccountUseCase.signIn(MockData.mockEmailPasswordRequest)).thenReturn(MockData.mockAccountStateAccountSignedInResponseWrapper)
+
+        // then
+        logInViewModel.loginButtonClicked()
+        val snackbarState = logInViewModel.getSnackbarState()
+        val logInNavRouteUiState = logInViewModel.getLogInNavRouteUiState()
+
+        // verify
+        Assertions.assertFalse(logInViewModel.isLoading())
+        Assertions.assertTrue(snackbarState is LogInViewModelImpl.LoginSnackbarState.AccountSignedIn)
+        Assertions.assertTrue(logInNavRouteUiState is LogInViewModelImpl.LogInNavRouteUi.GoToListScreenUi)
+    }
+
+    @Test
+    fun `enable logInButtonEnabled then loginButtonClicked signIn onError`(): Unit = runTest {
+
+        // then
+        setupLogInViewModel()
+        logInViewModel.updateEmailEditText(MockData.mockEmailPasswordRequest.email)
+        logInViewModel.updatePasswordEditText(MockData.mockEmailPasswordRequest.password)
+
+        val email = logInViewModel.getEmailEditText()
+        val password = logInViewModel.getPasswordEditText()
+
+        // verify
+        Assertions.assertTrue(logInViewModel.isLogInButtonEnabled())
+        Assertions.assertEquals(
+            MockData.mockEmailPasswordRequest.email,
+            email
+        )
+        Assertions.assertEquals(
+            MockData.mockEmailPasswordRequest.password,
+            password
+        )
+
+        // when
+        Mockito.`when`(mockAccountUseCase.signIn(MockData.mockEmailPasswordRequest)).thenReturn(MockData.mockAccountStateGenericErrorResponseWrapper)
+
+        // then
+        logInViewModel.loginButtonClicked()
+        val snackbarState = logInViewModel.getSnackbarState()
+        val logInNavRouteUiState = logInViewModel.getLogInNavRouteUiState()
+
+        // verify
+        Assertions.assertFalse(logInViewModel.isLoading())
+        Assertions.assertTrue(snackbarState is LogInViewModelImpl.LoginSnackbarState.ShowGenericError)
+        Assertions.assertFalse(logInNavRouteUiState is LogInViewModelImpl.LogInNavRouteUi.GoToListScreenUi)
+    }
 }
