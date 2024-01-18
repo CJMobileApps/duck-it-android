@@ -579,4 +579,30 @@ class DuckItListViewModelTest : BaseTest() {
         Assertions.assertTrue(snackbarState is DuckItListViewModelImpl.DuckItSnackbarState.UnableToGetDuckItListError)
         Mockito.verify(mockDuckItUseCase, Mockito.times(1)).fetchPosts()
     }
+
+    @Test
+    fun `refresh fetchPosts not in DuckItListLoadedState flow`() = runTest {
+
+        // then init setup
+        setupDuckItListViewModel()
+        val duckItListState = duckItListViewModel.getState()
+
+        // verify in loading state
+        Assertions.assertTrue((duckItListState is DuckItListViewModelImpl.DuckItListState.LoadingState))
+
+        // when
+        Mockito.`when`(mockDuckItUseCase.getPosts(postsResponseWrapperArgumentCaptor.capture()))
+            .thenReturn(Unit)
+
+        Mockito.`when`(
+            mockAccountUseCase.initDuckItTokenFlow(duckItTokenFlowResponseWrapperArgumentCaptor.capture())
+        )
+            .thenReturn(Unit)
+
+        // then
+        duckItListViewModel.refresh()
+
+        // verify
+        Mockito.verify(mockDuckItUseCase, Mockito.times(1)).fetchPosts()
+    }
 }
