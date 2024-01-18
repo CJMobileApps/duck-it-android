@@ -35,8 +35,8 @@ class AccountUseCase(
         }
     }
 
-    suspend fun signIn(emailPasswordRequest: EmailPasswordRequest): ResponseWrapper<AccountState>? {
-        var responseWrapper: ResponseWrapper<AccountState>? = null
+    suspend fun signIn(emailPasswordRequest: EmailPasswordRequest): ResponseWrapper<AccountState> {
+        var responseWrapper: ResponseWrapper<AccountState> = ResponseWrapper()
 
         accountRepository.signIn(emailPasswordRequest)
             .onSuccess { token ->
@@ -72,8 +72,8 @@ class AccountUseCase(
         removeDuckItToken()
     }
 
-    private suspend fun signUp(emailPasswordRequest: EmailPasswordRequest): ResponseWrapper<AccountState>? {
-        var responseWrapper: ResponseWrapper<AccountState>? = null
+    private suspend fun signUp(emailPasswordRequest: EmailPasswordRequest): ResponseWrapper<AccountState> {
+        var responseWrapper: ResponseWrapper<AccountState> = ResponseWrapper()
 
         accountRepository.signUp(emailPasswordRequest)
             .onSuccess { token ->

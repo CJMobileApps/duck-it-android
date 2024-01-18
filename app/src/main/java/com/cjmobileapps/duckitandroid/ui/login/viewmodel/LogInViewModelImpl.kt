@@ -79,8 +79,6 @@ class LogInViewModelImpl @Inject constructor(
             val email = state.emailEditText.value
             val password = state.passwordEditText.value
 
-            if (email.isEmpty() || password.isEmpty()) return@launch
-
             val emailPasswordRequest = EmailPasswordRequest(
                 email = email,
                 password = password
@@ -88,7 +86,7 @@ class LogInViewModelImpl @Inject constructor(
             state.isLoading.value = true
 
             accountUseCase.signIn(emailPasswordRequest)
-                ?.onSuccess { accountState ->
+                .onSuccess { accountState ->
                     val loginSnackbarState = when (accountState) {
                         AccountState.AccountSignedIn -> LoginSnackbarState.AccountSignedIn
                         AccountState.AccountCreated -> LoginSnackbarState.AccountCreated
@@ -98,7 +96,7 @@ class LogInViewModelImpl @Inject constructor(
                     snackbarState.value = loginSnackbarState
                     state.logInNavRouteUi.value = LogInNavRouteUi.GoToListScreenUi
                 }
-                ?.onError { error ->
+                .onError { error ->
                     stopLoading()
                     snackbarState.value = LoginSnackbarState.ShowGenericError(error = error)
                 }
