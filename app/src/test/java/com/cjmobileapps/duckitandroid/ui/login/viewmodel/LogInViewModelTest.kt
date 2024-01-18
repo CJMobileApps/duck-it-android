@@ -2,6 +2,7 @@ package com.cjmobileapps.duckitandroid.ui.login.viewmodel
 
 import com.cjmobileapps.duckitandroid.data.MockData
 import com.cjmobileapps.duckitandroid.data.account.AccountUseCase
+import com.cjmobileapps.duckitandroid.data.model.compose.UserLoggedInState
 import com.cjmobileapps.duckitandroid.testutil.BaseTest
 import com.cjmobileapps.duckitandroid.testutil.TestCoroutineDispatchers
 import kotlinx.coroutines.test.runTest
@@ -25,6 +26,12 @@ class LogInViewModelTest : BaseTest() {
     }
 
     @Test
+    fun `userLoggedInState is UserLoggedInState DontShowUserLoggedIn`() {
+        setupLogInViewModel()
+        Assertions.assertTrue(logInViewModel.userLoggedInState() == UserLoggedInState.DontShowUserLoggedIn)
+    }
+
+    @Test
     fun `init logInButtonEnabled not enabled flow`() {
 
         // then
@@ -33,6 +40,29 @@ class LogInViewModelTest : BaseTest() {
         // verify
         Assertions.assertFalse(logInViewModel.isLogInButtonEnabled())
     }
+
+    @Test
+    fun `email not empty but logInButtonEnabled not enabled flow`() {
+
+        // then
+        setupLogInViewModel()
+        logInViewModel.updateEmailEditText(MockData.mockEmailPasswordRequest.email)
+
+        // verify
+        Assertions.assertFalse(logInViewModel.isLogInButtonEnabled())
+    }
+
+    @Test
+    fun `password not empty but logInButtonEnabled not enabled flow`() {
+
+        // then
+        setupLogInViewModel()
+        logInViewModel.updatePasswordEditText(MockData.mockEmailPasswordRequest.password)
+
+        // verify
+        Assertions.assertFalse(logInViewModel.isLogInButtonEnabled())
+    }
+
 
     @Test
     fun `enable logInButtonEnabled then loginButtonClicked accountCreated`(): Unit = runTest {
@@ -69,4 +99,6 @@ class LogInViewModelTest : BaseTest() {
         Assertions.assertTrue(snackbarState is LogInViewModelImpl.LoginSnackbarState.AccountCreated)
         Assertions.assertTrue(logInNavRouteUiState is LogInViewModelImpl.LogInNavRouteUi.GoToListScreenUi)
     }
+
+
 }
