@@ -48,6 +48,7 @@ class NewPostViewModelImpl @Inject constructor(
     override fun getState() = newPostState.value
 
     override fun getSnackbarState() = snackbarState.value
+
     override fun getHeadlineEditText(): String {
         val state = getState()
         if (state !is NewPostState.NewPostLoadedState) return ""
