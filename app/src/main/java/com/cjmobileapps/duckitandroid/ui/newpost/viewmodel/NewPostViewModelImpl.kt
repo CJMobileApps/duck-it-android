@@ -50,43 +50,35 @@ class NewPostViewModelImpl @Inject constructor(
     override fun getSnackbarState() = snackbarState.value
 
     override fun getHeadlineEditText(): String {
-        val state = getState()
-        if (state !is NewPostState.NewPostLoadedState) return ""
+        val state = (getState() as NewPostState.NewPostLoadedState)
         return state.headlineEditText.value
     }
 
     override fun updateHeadlineEditText(headline: String) {
-        val state = getState()
-        if (state !is NewPostState.NewPostLoadedState) return
+        val state = (getState() as NewPostState.NewPostLoadedState)
         state.headlineEditText.value = headline
     }
 
     override fun getImageUrlEditText(): String {
-        val state = getState()
-        if (state !is NewPostState.NewPostLoadedState) return ""
+        val state = (getState() as NewPostState.NewPostLoadedState)
         return state.imageUrlEditText.value
     }
 
     override fun updateImageUrlEditText(imageUrl: String) {
-        val state = getState()
-        if (state !is NewPostState.NewPostLoadedState) return
+        val state = (getState() as NewPostState.NewPostLoadedState)
         state.imageUrlEditText.value = imageUrl
     }
 
     override fun isCreateNewPostButtonEnabled(): Boolean {
-        val state = getState()
-        if (state !is NewPostState.NewPostLoadedState) return false
+        val state = (getState() as NewPostState.NewPostLoadedState)
         return state.headlineEditText.value.isNotEmpty() && state.imageUrlEditText.value.isNotEmpty()
     }
 
     override fun createNewPostButtonClicked() {
         viewModelScope.launch(coroutineContext) {
-            val state = getState()
-            if (state !is NewPostState.NewPostLoadedState) return@launch
+            val state = (getState() as NewPostState.NewPostLoadedState)
             val headline = state.headlineEditText.value
             val imageUrl = state.imageUrlEditText.value
-
-            if (headline.isEmpty() || imageUrl.isEmpty()) return@launch
 
             state.isLoading.value = true
 
@@ -117,34 +109,29 @@ class NewPostViewModelImpl @Inject constructor(
     }
 
     override fun getNewPostNavRouteUiState(): NewPostNavRouteUi {
-        val state = getState()
-        if (state !is NewPostState.NewPostLoadedState) return NewPostNavRouteUi.Idle
+        val state = (getState() as NewPostState.NewPostLoadedState)
         return state.newPostNavRouteUi.value
     }
 
     override fun resetNavRouteUiToIdle() {
-        val state = getState()
-        if (state !is NewPostState.NewPostLoadedState) return
+        val state = (getState() as NewPostState.NewPostLoadedState)
         state.newPostNavRouteUi.value = NewPostNavRouteUi.Idle
     }
 
     override fun userLoggedInState() = UserLoggedInState.DontShowUserLoggedIn
 
     override fun isLoading(): Boolean {
-        val state = getState()
-        if (state !is NewPostState.NewPostLoadedState) return false
+        val state = (getState() as NewPostState.NewPostLoadedState)
         return state.isLoading.value
     }
 
     private fun stopLoading() {
-        val state = getState()
-        if (state !is NewPostState.NewPostLoadedState) return
+        val state = (getState() as NewPostState.NewPostLoadedState)
         state.isLoading.value = false
     }
 
     private fun updateIsUserLoggedIn(isUserLoggedIn: Boolean) {
-        val state = getState()
-        if (state !is NewPostState.NewPostLoadedState) return
+        val state = (getState() as NewPostState.NewPostLoadedState)
         state.isUserLoggedIn.value = isUserLoggedIn
     }
 
