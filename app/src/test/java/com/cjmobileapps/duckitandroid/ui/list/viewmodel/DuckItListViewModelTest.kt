@@ -164,7 +164,8 @@ class DuckItListViewModelTest : BaseTest() {
             mockAccountUseCase.initDuckItTokenFlow(duckItTokenFlowResponseWrapperArgumentCaptor.capture())
         )
             .thenReturn(Unit)
-        Mockito.`when`(mockDuckItUseCase.upvote(MockData.mockPostId)).thenReturn(MockData.mockUpVotesResponseSuccess)
+        Mockito.`when`(mockDuckItUseCase.upvote(MockData.mockPostId))
+            .thenReturn(MockData.mockUpVotesResponseSuccess)
         Mockito.`when`(mockAccountUseCase.isUserLoggedIn).thenReturn(true)
 
         // then
@@ -188,7 +189,8 @@ class DuckItListViewModelTest : BaseTest() {
             mockAccountUseCase.initDuckItTokenFlow(duckItTokenFlowResponseWrapperArgumentCaptor.capture())
         )
             .thenReturn(Unit)
-        Mockito.`when`(mockDuckItUseCase.upvote(MockData.mockPostId)).thenReturn(MockData.mockUpVotesResponseSuccess)
+        Mockito.`when`(mockDuckItUseCase.upvote(MockData.mockPostId))
+            .thenReturn(MockData.mockUpVotesResponseSuccess)
         Mockito.`when`(mockAccountUseCase.isUserLoggedIn).thenReturn(false)
 
         // then
@@ -214,7 +216,8 @@ class DuckItListViewModelTest : BaseTest() {
             mockAccountUseCase.initDuckItTokenFlow(duckItTokenFlowResponseWrapperArgumentCaptor.capture())
         )
             .thenReturn(Unit)
-        Mockito.`when`(mockDuckItUseCase.upvote(MockData.mockPostId)).thenReturn(MockData.mockUpVotesResponseErrorHttpNotFound)
+        Mockito.`when`(mockDuckItUseCase.upvote(MockData.mockPostId))
+            .thenReturn(MockData.mockUpVotesResponseErrorHttpNotFound)
         Mockito.`when`(mockAccountUseCase.isUserLoggedIn).thenReturn(true)
 
         // then
@@ -240,7 +243,8 @@ class DuckItListViewModelTest : BaseTest() {
             mockAccountUseCase.initDuckItTokenFlow(duckItTokenFlowResponseWrapperArgumentCaptor.capture())
         )
             .thenReturn(Unit)
-        Mockito.`when`(mockDuckItUseCase.downvote(MockData.mockPostId)).thenReturn(MockData.mockUpVotesResponseSuccess)
+        Mockito.`when`(mockDuckItUseCase.downvote(MockData.mockPostId))
+            .thenReturn(MockData.mockUpVotesResponseSuccess)
         Mockito.`when`(mockAccountUseCase.isUserLoggedIn).thenReturn(true)
 
         // then
@@ -264,7 +268,8 @@ class DuckItListViewModelTest : BaseTest() {
             mockAccountUseCase.initDuckItTokenFlow(duckItTokenFlowResponseWrapperArgumentCaptor.capture())
         )
             .thenReturn(Unit)
-        Mockito.`when`(mockDuckItUseCase.downvote(MockData.mockPostId)).thenReturn(MockData.mockUpVotesResponseSuccess)
+        Mockito.`when`(mockDuckItUseCase.downvote(MockData.mockPostId))
+            .thenReturn(MockData.mockUpVotesResponseSuccess)
         Mockito.`when`(mockAccountUseCase.isUserLoggedIn).thenReturn(false)
 
         // then
@@ -290,7 +295,8 @@ class DuckItListViewModelTest : BaseTest() {
             mockAccountUseCase.initDuckItTokenFlow(duckItTokenFlowResponseWrapperArgumentCaptor.capture())
         )
             .thenReturn(Unit)
-        Mockito.`when`(mockDuckItUseCase.downvote(MockData.mockPostId)).thenReturn(MockData.mockUpVotesResponseErrorHttpNotFound)
+        Mockito.`when`(mockDuckItUseCase.downvote(MockData.mockPostId))
+            .thenReturn(MockData.mockUpVotesResponseErrorHttpNotFound)
         Mockito.`when`(mockAccountUseCase.isUserLoggedIn).thenReturn(true)
 
         // then
@@ -342,6 +348,60 @@ class DuckItListViewModelTest : BaseTest() {
         // then
         setupDuckItListViewModel()
         val userLoggedInState = duckItListViewModel.userLoggedInState()
+
+        // verify
+        Assertions.assertTrue(userLoggedInState == UserLoggedInState.UserLoggedOut)
+    }
+
+    @Test
+    fun `user is logged in UserLoggedInState UserLoggedIn`(): Unit = runTest {
+
+        // when
+        Mockito.`when`(mockDuckItUseCase.getPosts(postsResponseWrapperArgumentCaptor.capture()))
+            .thenReturn(Unit)
+
+        Mockito.`when`(
+            mockAccountUseCase.initDuckItTokenFlow(duckItTokenFlowResponseWrapperArgumentCaptor.capture())
+        )
+            .thenReturn(Unit)
+        Mockito.`when`(mockAccountUseCase.isUserLoggedIn).thenReturn(true)
+
+        // then
+        setupDuckItListViewModel()
+        postsResponseWrapperArgumentCaptor.firstValue.invoke(MockData.mockPostsResponseWrapper)
+        duckItTokenFlowResponseWrapperArgumentCaptor.firstValue.invoke(true)
+        val userLoggedInState = duckItListViewModel.userLoggedInState()
+
+        // verify
+        Assertions.assertTrue(userLoggedInState == UserLoggedInState.UserLoggedIn)
+    }
+
+    @Test
+    fun `user logged in isUserLoggedInButtonClicked() then UserLoggedInState UserLoggedOut`(): Unit = runTest {
+
+        // when
+        Mockito.`when`(mockDuckItUseCase.getPosts(postsResponseWrapperArgumentCaptor.capture()))
+            .thenReturn(Unit)
+
+        Mockito.`when`(
+            mockAccountUseCase.initDuckItTokenFlow(duckItTokenFlowResponseWrapperArgumentCaptor.capture())
+        )
+            .thenReturn(Unit)
+        Mockito.`when`(mockAccountUseCase.isUserLoggedIn).thenReturn(true)
+
+        // then
+        setupDuckItListViewModel()
+        postsResponseWrapperArgumentCaptor.firstValue.invoke(MockData.mockPostsResponseWrapper)
+        duckItTokenFlowResponseWrapperArgumentCaptor.firstValue.invoke(true)
+        var userLoggedInState = duckItListViewModel.userLoggedInState()
+
+        // verify
+        Assertions.assertTrue(userLoggedInState == UserLoggedInState.UserLoggedIn)
+
+        // then
+        duckItListViewModel.isUserLoggedInButtonClicked()
+        duckItTokenFlowResponseWrapperArgumentCaptor.firstValue.invoke(false)
+        userLoggedInState = duckItListViewModel.userLoggedInState()
 
         // verify
         Assertions.assertTrue(userLoggedInState == UserLoggedInState.UserLoggedOut)
