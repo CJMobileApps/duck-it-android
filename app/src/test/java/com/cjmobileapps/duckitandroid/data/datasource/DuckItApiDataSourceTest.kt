@@ -4,7 +4,7 @@ import com.cjmobileapps.duckitandroid.data.MockData
 import com.cjmobileapps.duckitandroid.network.DuckItApi
 import com.cjmobileapps.duckitandroid.testutil.BaseTest
 import com.cjmobileapps.duckitandroid.testutil.TestCoroutineDispatchers
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.Mock
@@ -25,7 +25,7 @@ class DuckItApiDataSourceTest : BaseTest() {
     }
 
     @Test
-    fun `signIn happy success flow`(): Unit = runBlocking {
+    fun `signIn happy success flow`(): Unit = runTest {
 
         //when
         Mockito.`when`(mockDuckItApi.signInAsync(MockData.mockEmailPasswordRequest))
@@ -43,7 +43,7 @@ class DuckItApiDataSourceTest : BaseTest() {
     }
 
     @Test
-    fun `signUp happy success flow`(): Unit = runBlocking {
+    fun `signUp happy success flow`(): Unit = runTest {
 
         //when
         Mockito.`when`(mockDuckItApi.signUpAsync(MockData.mockEmailPasswordRequest))
@@ -61,7 +61,7 @@ class DuckItApiDataSourceTest : BaseTest() {
     }
 
     @Test
-    fun `newPost happy success flow`(): Unit = runBlocking {
+    fun `newPost happy success flow`(): Unit = runTest {
 
         //when
         Mockito.`when`(mockDuckItApi.newPostAsync(MockData.mockToken, MockData.mockNewPostRequest))
@@ -82,7 +82,7 @@ class DuckItApiDataSourceTest : BaseTest() {
     }
 
     @Test
-    fun `getPosts happy success flow`(): Unit = runBlocking {
+    fun `getPosts happy success flow`(): Unit = runTest {
 
         //when
         Mockito.`when`(mockDuckItApi.getPostsAsync())
@@ -100,7 +100,7 @@ class DuckItApiDataSourceTest : BaseTest() {
     }
 
     @Test
-    fun `upvote happy success flow`(): Unit = runBlocking {
+    fun `upvote happy success flow`(): Unit = runTest {
 
         //when
         Mockito.`when`(mockDuckItApi.upvoteAsync(MockData.mockPostId))
@@ -118,7 +118,7 @@ class DuckItApiDataSourceTest : BaseTest() {
     }
 
     @Test
-    fun `downvote happy success flow`(): Unit = runBlocking {
+    fun `downvote happy success flow`(): Unit = runTest {
 
         //when
         Mockito.`when`(mockDuckItApi.downvoteAsync(MockData.mockPostId))

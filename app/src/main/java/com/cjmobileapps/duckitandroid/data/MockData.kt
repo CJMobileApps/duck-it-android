@@ -9,6 +9,7 @@ import com.cjmobileapps.duckitandroid.data.model.Posts
 import com.cjmobileapps.duckitandroid.data.model.ResponseWrapper
 import com.cjmobileapps.duckitandroid.data.model.TokenResponse
 import com.cjmobileapps.duckitandroid.data.model.Upvotes
+import com.cjmobileapps.duckitandroid.data.model.convertToStateObj
 import kotlinx.coroutines.CompletableDeferred
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -172,9 +173,16 @@ object MockData {
 
     val mockPostId = mockPostList.first().id!!
 
+    val mockPostsStateObjs = mockPosts.posts.convertToStateObj()
+
     private val mockUpVotes = Upvotes(upvotes = 70)
 
     val mockUpVotesResponseSuccess: Response<Upvotes> = Response.success(mockUpVotes)
+
+    val mockUpVotesResponseErrorHttpNotFound: Response<Upvotes> = Response.error(
+        HttpURLConnection.HTTP_NOT_FOUND,
+        "There was a problem".toResponseBody("text/plain;charset=UTF-8".toMediaType())
+    )
 
     val mockDeferredUpVotesResponseSuccess = CompletableDeferred(mockUpVotesResponseSuccess)
 
