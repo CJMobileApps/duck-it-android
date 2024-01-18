@@ -45,6 +45,14 @@ class NewPostViewModelImpl @Inject constructor(
 
     private val tag = NewPostViewModelImpl::class.java.simpleName
 
+    init {
+        viewModelScope.launch(coroutineContext) {
+            accountUseCase.initDuckItTokenFlow(onIsUserLoggedIn = { isUserLoggedIn ->
+                updateIsUserLoggedIn(isUserLoggedIn)
+            })
+        }
+    }
+
     override fun getState() = newPostState.value
 
     override fun getSnackbarState() = snackbarState.value
@@ -90,11 +98,9 @@ class NewPostViewModelImpl @Inject constructor(
             duckItUseCase
                 .newPost(newPost)
                 .onSuccess {
-                    if (it) {
                         snackbarState.value = NewPostSnackbarState.NewPostCreated
                         stopLoading()
                         state.newPostNavRouteUi.value = NewPostNavRouteUi.GoToLogInScreenUi
-                    }
                 }
                 .onError { error ->
                     stopLoading()
@@ -133,14 +139,6 @@ class NewPostViewModelImpl @Inject constructor(
     private fun updateIsUserLoggedIn(isUserLoggedIn: Boolean) {
         val state = (getState() as NewPostState.NewPostLoadedState)
         state.isUserLoggedIn.value = isUserLoggedIn
-    }
-
-    init {
-        viewModelScope.launch(coroutineContext) {
-            accountUseCase.initDuckItTokenFlow(onIsUserLoggedIn = { isUserLoggedIn ->
-                updateIsUserLoggedIn(isUserLoggedIn)
-            })
-        }
     }
 
     sealed class NewPostState {

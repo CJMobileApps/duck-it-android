@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.kotlin.argumentCaptor
 
 class NewPostViewModelTest : BaseTest() {
 
@@ -21,6 +22,9 @@ class NewPostViewModelTest : BaseTest() {
 
     @Mock
     private lateinit var mockDuckItUseCase: DuckItUseCase
+
+    private val duckItTokenFlowResponseWrapperArgumentCaptor =
+        argumentCaptor<(isUserLoggedIn: Boolean) -> Unit>()
 
     private fun setupNewPostViewModel() {
         newPostViewModel = NewPostViewModelImpl(
@@ -193,4 +197,22 @@ class NewPostViewModelTest : BaseTest() {
             Assertions.assertTrue(snackbarState is NewPostViewModelImpl.NewPostSnackbarState.Idle)
             Assertions.assertTrue(logInNavRouteUiState is NewPostViewModelImpl.NewPostNavRouteUi.Idle)
         }
+
+    @Test
+    fun `init initDuckItTokenFlow user logged in`(): Unit = runTest {
+
+        // when
+        Mockito.`when`(
+            mockAccountUseCase.initDuckItTokenFlow(duckItTokenFlowResponseWrapperArgumentCaptor.capture())
+        )
+            .thenReturn(Unit)
+
+        // then
+        setupNewPostViewModel()
+        duckItTokenFlowResponseWrapperArgumentCaptor.firstValue.invoke(true)
+        val state = newPostViewModel.getState()
+
+        // verify
+        Assertions.assertTrue((state as NewPostViewModelImpl.NewPostState.NewPostLoadedState).isUserLoggedIn.value)
+    }
 }
