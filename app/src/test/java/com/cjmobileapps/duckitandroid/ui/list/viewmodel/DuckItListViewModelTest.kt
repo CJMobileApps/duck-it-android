@@ -446,4 +446,54 @@ class DuckItListViewModelTest : BaseTest() {
             // verify
             Assertions.assertTrue(duckItListNavRouteUiState == DuckItListViewModelImpl.DuckItListNavRouteUi.Idle)
         }
+
+    @Test
+    fun `init upvote not in DuckItListLoadedState`() = runTest {
+
+        // then
+        setupDuckItListViewModel()
+        duckItListViewModel.upvote(MockData.mockPostId)
+
+        // verify
+        Mockito.verify(mockDuckItUseCase, Mockito.times(0)).upvote(MockData.mockPostId)
+    }
+
+    @Test
+    fun `init downvote not in DuckItListLoadedState`() = runTest {
+
+        // then
+        setupDuckItListViewModel()
+        duckItListViewModel.downvote(MockData.mockPostId)
+
+        // verify
+        Mockito.verify(mockDuckItUseCase, Mockito.times(0)).downvote(MockData.mockPostId)
+    }
+
+    @Test
+    fun `init isUserLoggedInButtonClicked not in DuckItListLoadedState`() = runTest {
+
+        // then
+        setupDuckItListViewModel()
+        duckItListViewModel.downvote(MockData.mockPostId)
+
+        // verify
+        val duckItListNavRouteUiState = duckItListViewModel.getDuckItListNavRouteUiState()
+
+        // verify
+        Assertions.assertTrue(duckItListNavRouteUiState == DuckItListViewModelImpl.DuckItListNavRouteUi.Idle)
+    }
+
+    @Test
+    fun `init resetNavRouteUiToIdle not in DuckItListLoadedState`() = runTest {
+
+        // then
+        setupDuckItListViewModel()
+        duckItListViewModel.resetNavRouteUiToIdle()
+
+        // verify
+        val duckItListNavRouteUiState = duckItListViewModel.getDuckItListNavRouteUiState()
+
+        // verify
+        Assertions.assertTrue(duckItListNavRouteUiState == DuckItListViewModelImpl.DuckItListNavRouteUi.Idle)
+    }
 }
