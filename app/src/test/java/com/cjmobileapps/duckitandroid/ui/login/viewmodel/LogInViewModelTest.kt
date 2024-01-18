@@ -27,7 +27,11 @@ class LogInViewModelTest : BaseTest() {
 
     @Test
     fun `userLoggedInState is UserLoggedInState DontShowUserLoggedIn`() {
+
+        // then
         setupLogInViewModel()
+
+        // verify
         Assertions.assertTrue(logInViewModel.userLoggedInState() == UserLoggedInState.DontShowUserLoggedIn)
     }
 
@@ -42,7 +46,7 @@ class LogInViewModelTest : BaseTest() {
     }
 
     @Test
-    fun `email not empty but logInButtonEnabled not enabled flow`() {
+    fun `email not empty so logInButtonEnabled not enabled flow`() {
 
         // then
         setupLogInViewModel()
@@ -53,7 +57,7 @@ class LogInViewModelTest : BaseTest() {
     }
 
     @Test
-    fun `password not empty but logInButtonEnabled not enabled flow`() {
+    fun `password not empty so logInButtonEnabled not enabled flow`() {
 
         // then
         setupLogInViewModel()
@@ -171,7 +175,7 @@ class LogInViewModelTest : BaseTest() {
         Assertions.assertFalse(logInNavRouteUiState is LogInViewModelImpl.LogInNavRouteUi.GoToListScreenUi)
     }
     @Test
-    fun `enable logInButtonEnabled then loginButtonClicked accountSignedIn then resetSnackbarState & resetNavRouteUiToIdle(`(): Unit = runTest {
+    fun `enable logInButtonEnabled then loginButtonClicked accountSignedIn then resetSnackbarState & resetNavRouteUiToIdle`(): Unit = runTest {
 
         // then
         setupLogInViewModel()
