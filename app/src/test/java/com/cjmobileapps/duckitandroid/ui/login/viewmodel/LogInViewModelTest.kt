@@ -175,7 +175,7 @@ class LogInViewModelTest : BaseTest() {
         Assertions.assertFalse(logInNavRouteUiState is LogInViewModelImpl.LogInNavRouteUi.GoToListScreenUi)
     }
     @Test
-    fun `enable logInButtonEnabled then loginButtonClicked accountSignedIn then resetSnackbarState & resetNavRouteUiToIdle(`(): Unit = runTest {
+    fun `enable logInButtonEnabled then loginButtonClicked accountSignedIn then resetSnackbarState & resetNavRouteUiToIdle`(): Unit = runTest {
 
         // then
         setupLogInViewModel()
