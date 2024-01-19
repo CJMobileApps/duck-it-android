@@ -1,5 +1,6 @@
 package com.cjmobileapps.duckitandroid.ui.newpost
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.cjmobileapps.duckitandroid.R
@@ -24,6 +26,8 @@ import com.cjmobileapps.duckitandroid.ui.DuckItTopAppBar
 import com.cjmobileapps.duckitandroid.ui.NavItem
 import com.cjmobileapps.duckitandroid.ui.newpost.viewmodel.NewPostViewModel
 import com.cjmobileapps.duckitandroid.ui.newpost.viewmodel.NewPostViewModelImpl
+import com.cjmobileapps.duckitandroid.ui.theme.DuckItAndroidTheme
+import com.cjmobileapps.duckitandroid.ui.theme.DuckItBlackLong
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -47,9 +51,8 @@ fun NewPostUi(
             is NewPostViewModelImpl.NewPostState.NewPostLoadedState -> {
                 NewPostLoadedUi(
                     modifier = Modifier.padding(innerPadding),
-                    newPostViewModel = newPostViewModel,
                     navController = navController,
-                    isLoading = newPostViewModel.isLoading()
+                    newPostViewModel = newPostViewModel
                 )
             }
         }
@@ -98,7 +101,41 @@ fun NewPostSnackbar(
 fun NewPostLoadedUi(
     modifier: Modifier,
     newPostViewModel: NewPostViewModel,
-    navController: NavController,
+    navController: NavController
+) {
+    NewPostMainContentUi(
+        modifier = modifier,
+        headlineText = newPostViewModel.getHeadlineEditText(),
+        onHeadlineValueChange = { newPostViewModel.updateHeadlineEditText(it) },
+        imageUrlText = newPostViewModel.getImageUrlEditText(),
+        onImageUrlValueChange = { newPostViewModel.updateImageUrlEditText(it) },
+        isCreateNewPostButtonEnabled = newPostViewModel.isCreateNewPostButtonEnabled(),
+        onCreateNewPostButtonClicked = { newPostViewModel.createNewPostButtonClicked() },
+        isLoading = newPostViewModel.isLoading()
+    )
+
+    when (newPostViewModel.getNewPostNavRouteUiState()) {
+        NewPostViewModelImpl.NewPostNavRouteUi.Idle -> {}
+        NewPostViewModelImpl.NewPostNavRouteUi.GoToLogInScreenUi -> {
+            navController.navigate(NavItem.List.navRoute) {
+                popUpTo(navController.graph.id) {
+                    inclusive = true
+                }
+            }
+            newPostViewModel.resetNavRouteUiToIdle()
+        }
+    }
+}
+
+@Composable
+fun NewPostMainContentUi(
+    modifier: Modifier,
+    headlineText: String,
+    onHeadlineValueChange: (text: String) -> Unit,
+    imageUrlText: String,
+    onImageUrlValueChange: (text: String) -> Unit,
+    isCreateNewPostButtonEnabled: Boolean,
+    onCreateNewPostButtonClicked: () -> Unit,
     isLoading: Boolean
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -117,8 +154,8 @@ fun NewPostLoadedUi(
                 modifier = Modifier
                     .fillMaxWidth()
                     .testTag(""),
-                value = newPostViewModel.getHeadlineEditText(),
-                onValueChange = { newPostViewModel.updateHeadlineEditText(it) },
+                value = headlineText,
+                onValueChange = { onHeadlineValueChange.invoke(it) },
                 label = { Text(stringResource(R.string.headline)) }
             )
 
@@ -126,8 +163,8 @@ fun NewPostLoadedUi(
                 modifier = Modifier
                     .fillMaxWidth()
                     .testTag(""),
-                value = newPostViewModel.getImageUrlEditText(),
-                onValueChange = { newPostViewModel.updateImageUrlEditText(it) },
+                value = imageUrlText,
+                onValueChange = { onImageUrlValueChange.invoke(it) },
                 label = { Text(stringResource(R.string.image_url)) }
             )
 
@@ -135,23 +172,45 @@ fun NewPostLoadedUi(
                 modifier = Modifier
                     .padding(top = 4.dp)
                     .fillMaxWidth(),
-                enabled = newPostViewModel.isCreateNewPostButtonEnabled(),
-                onClick = { newPostViewModel.createNewPostButtonClicked() }
+                enabled = isCreateNewPostButtonEnabled,
+                onClick = onCreateNewPostButtonClicked
             ) {
                 Text(text = stringResource(R.string.create_new_post))
             }
         }
     }
+}
 
-    when (newPostViewModel.getNewPostNavRouteUiState()) {
-        NewPostViewModelImpl.NewPostNavRouteUi.Idle -> {}
-        NewPostViewModelImpl.NewPostNavRouteUi.GoToLogInScreenUi -> {
-            navController.navigate(NavItem.List.navRoute) {
-                popUpTo(navController.graph.id) {
-                    inclusive = true
-                }
-            }
-            newPostViewModel.resetNavRouteUiToIdle()
-        }
-    }
+@Preview(showBackground = true)
+@Composable
+fun NewPostMainContentUiPreview() = DuckItAndroidTheme {
+    NewPostMainContentUi(
+        modifier = Modifier,
+        headlineText = "Super Duck",
+        onHeadlineValueChange = {  },
+        imageUrlText = "https://superduck.io",
+        onImageUrlValueChange = {  },
+        isCreateNewPostButtonEnabled = true,
+        onCreateNewPostButtonClicked = {  },
+        isLoading = false
+    )
+}
+
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    backgroundColor = DuckItBlackLong
+)
+@Composable
+fun NewPostMainContentUiDarkPreview() = DuckItAndroidTheme {
+    NewPostMainContentUi(
+        modifier = Modifier,
+        headlineText = "Super Duck",
+        onHeadlineValueChange = {  },
+        imageUrlText = "https://superduck.io",
+        onImageUrlValueChange = {  },
+        isCreateNewPostButtonEnabled = true,
+        onCreateNewPostButtonClicked = {  },
+        isLoading = false
+    )
 }
