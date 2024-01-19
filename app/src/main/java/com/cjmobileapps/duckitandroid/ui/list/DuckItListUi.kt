@@ -1,5 +1,6 @@
 package com.cjmobileapps.duckitandroid.ui.list
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,16 +32,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.cjmobileapps.duckitandroid.R
+import com.cjmobileapps.duckitandroid.data.MockData
 import com.cjmobileapps.duckitandroid.data.model.PostState
 import com.cjmobileapps.duckitandroid.ui.DuckItTopAppBar
 import com.cjmobileapps.duckitandroid.ui.NavItem
 import com.cjmobileapps.duckitandroid.ui.list.viewmodel.DuckItListViewModel
 import com.cjmobileapps.duckitandroid.ui.list.viewmodel.DuckItListViewModelImpl
 import com.cjmobileapps.duckitandroid.ui.list.viewmodel.DuckItListViewModelImpl.DuckItListState.*
+import com.cjmobileapps.duckitandroid.ui.theme.DuckItAndroidTheme
+import com.cjmobileapps.duckitandroid.ui.theme.DuckItBlackLong
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -180,77 +185,13 @@ fun DuckItListLoadedUi(
 ) {
     val posts = duckItListLoadedState.posts
 
-    LazyColumn(modifier = modifier.fillMaxWidth()) {
-        itemsIndexed(
-            items = posts,
-            key = { _, item: PostState ->
-                item.id ?: ""
-            },
-            itemContent = { index, item ->
-                Column(
-                    modifier = Modifier.padding(0.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    Text(
-                        modifier = Modifier.padding(
-                            start = 16.dp,
-                            end = 0.dp,
-                            top = 4.dp,
-                            bottom = 16.dp
-                        ),
-                        text = item.headline ?: "",
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-
-                    AsyncImage(
-                        modifier = Modifier
-                            .padding(start = 16.dp)
-                            .size(160.dp),
-                        model = item.image,
-                        contentDescription = stringResource(R.string.duck_image),
-                        fallback = painterResource(id = R.drawable.duck),
-                        placeholder = painterResource(id = R.drawable.duck),
-                        error = painterResource(id = R.drawable.duck)
-                    )
-
-                    Row(
-                        modifier = Modifier.padding(bottom = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        IconButton(onClick = {
-                            duckItListViewModel.upvote(postId = item.id ?: "")
-                        }) {
-                            Icon(
-                                imageVector = Icons.Filled.ArrowUpward,
-                                contentDescription = stringResource(R.string.upvote_button),
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
-
-                        Text(
-                            modifier = Modifier.padding(0.dp),
-                            text = item.upvotes.value.toString(),
-                            style = MaterialTheme.typography.headlineSmall
-                        )
-
-                        IconButton(onClick = {
-                            duckItListViewModel.downvote(postId = item.id ?: "")
-                        }) {
-                            Icon(
-                                imageVector = Icons.Filled.ArrowDownward,
-                                contentDescription = stringResource(R.string.downvote_button),
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                    }
-
-                    if (index < duckItListLoadedState.posts.lastIndex) {
-                        HorizontalDivider()
-                    }
-                }
-            })
-    }
+    DuckItListUi(
+        modifier = modifier,
+        posts = posts,
+        lastIndex = duckItListLoadedState.posts.lastIndex,
+        onUpvoteButtonClicked = { duckItListViewModel.upvote(postId = it) },
+        onDownvoteButtonClicked = { duckItListViewModel.downvote(postId = it) }
+    )
 
     when (duckItListViewModel.getDuckItListNavRouteUiState()) {
         is DuckItListViewModelImpl.DuckItListNavRouteUi.Idle -> {}
@@ -267,4 +208,155 @@ fun DuckItListLoadedUi(
             pullToRefreshState.endRefresh()
         }
     }
+}
+
+@Composable
+fun DuckItListUi(
+    modifier: Modifier,
+    posts: List<PostState>,
+    lastIndex: Int,
+    onUpvoteButtonClicked: (postId: String) -> Unit,
+    onDownvoteButtonClicked: (postId: String) -> Unit
+) {
+    LazyColumn(modifier = modifier.fillMaxWidth()) {
+        itemsIndexed(
+            items = posts,
+            key = { _, item: PostState ->
+                item.id ?: ""
+            },
+            itemContent = { index, postState ->
+                DuckItItemContentUi(
+                    postState = postState,
+                    index = index,
+                    lastIndex = lastIndex,
+                    onUpvoteButtonClicked = { onUpvoteButtonClicked.invoke(postState.id ?: "") },
+                    onDownvoteButtonClicked = { onDownvoteButtonClicked.invoke(postState.id ?: "") }
+                )
+            })
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DuckItListUiPreview() = DuckItAndroidTheme {
+    DuckItListUi(
+        modifier = Modifier,
+        posts = MockData.mockPostsStateObjs,
+        lastIndex = MockData.mockPostsStateObjs.lastIndex,
+        onUpvoteButtonClicked = { },
+        onDownvoteButtonClicked = { }
+    )
+}
+
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    backgroundColor = DuckItBlackLong
+)
+@Composable
+fun DuckItListUiDarkPreview() = DuckItAndroidTheme {
+    DuckItListUi(
+        modifier = Modifier,
+        posts = MockData.mockPostsStateObjs,
+        lastIndex = MockData.mockPostsStateObjs.lastIndex,
+        onUpvoteButtonClicked = { },
+        onDownvoteButtonClicked = { }
+    )
+}
+
+@Composable
+fun DuckItItemContentUi(
+    postState: PostState,
+    index: Int,
+    lastIndex: Int,
+    onUpvoteButtonClicked: () -> Unit,
+    onDownvoteButtonClicked: () -> Unit
+) {
+    Column(
+        modifier = Modifier.padding(0.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.Start
+    ) {
+        Text(
+            modifier = Modifier.padding(
+                start = 16.dp,
+                end = 0.dp,
+                top = 4.dp,
+                bottom = 16.dp
+            ),
+            text = postState.headline ?: "",
+            style = MaterialTheme.typography.headlineSmall
+        )
+
+        AsyncImage(
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .size(160.dp),
+            model = postState.image,
+            contentDescription = stringResource(R.string.duck_image),
+            fallback = painterResource(id = R.drawable.duck),
+            placeholder = painterResource(id = R.drawable.duck),
+            error = painterResource(id = R.drawable.duck)
+        )
+
+        Row(
+            modifier = Modifier.padding(bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onUpvoteButtonClicked) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowUpward,
+                    contentDescription = stringResource(R.string.upvote_button),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+
+            Text(
+                modifier = Modifier.padding(0.dp),
+                text = postState.upvotes.value.toString(),
+                style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+
+            IconButton(onClick = onDownvoteButtonClicked) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowDownward,
+                    contentDescription = stringResource(R.string.downvote_button),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
+
+        if (index < lastIndex) {
+            HorizontalDivider()
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DuckItItemContentUiPreview() = DuckItAndroidTheme {
+    DuckItItemContentUi(
+        postState = MockData.mockPostsStateObjs.first(),
+        index = 0,
+        lastIndex = 10,
+        onUpvoteButtonClicked = { },
+        onDownvoteButtonClicked = { }
+    )
+}
+
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    backgroundColor = DuckItBlackLong
+)
+@Composable
+fun NewPostMainContentUiDarkPreview() = DuckItAndroidTheme {
+    DuckItItemContentUi(
+        postState = MockData.mockPostsStateObjs.first(),
+        index = 0,
+        lastIndex = 10,
+        onUpvoteButtonClicked = { },
+        onDownvoteButtonClicked = { }
+    )
 }

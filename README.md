@@ -12,7 +12,6 @@ Build Tools & Versions Used
 TODO | Future Features
 ----
 * [ ] Add Espresso
-* [ ] Android Compose Ui Previews
 * [ ] Make app more accessible / Usability
 * [ ] Tablets
 
