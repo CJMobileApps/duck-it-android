@@ -1,5 +1,6 @@
 package com.cjmobileapps.duckitandroid.ui.views
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,8 +27,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cjmobileapps.duckitandroid.R
+import com.cjmobileapps.duckitandroid.ui.theme.DuckItAndroidTheme
+import com.cjmobileapps.duckitandroid.ui.theme.DuckItBlackLong
 
 @Composable
 fun EmailPasswordUi(
@@ -100,10 +104,38 @@ fun EmailPasswordUi(
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun GreetingPreview() {
-//    DuckItAndroidTheme {
-//
-//    }
-//}
+@Preview(showBackground = true)
+@Composable
+fun EmailPasswordUiPreview() = DuckItAndroidTheme {
+    EmailPasswordUi(
+        modifier = Modifier,
+        emailText = "johnsmith@duckit.com",
+        onEmailValueChange = {},
+        passwordText = "password",
+        onPasswordValueChange = {},
+        loginButtonText = "Log In",
+        isLogInButtonEnabled = true,
+        loginButtonClicked = {},
+        showLoading = false
+    )
+}
+
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    backgroundColor = DuckItBlackLong
+)
+@Composable
+fun EmailPasswordUiDarkPreview() = DuckItAndroidTheme {
+    EmailPasswordUi(
+        modifier = Modifier,
+        emailText = "johnsmith@duckit.com",
+        onEmailValueChange = {},
+        passwordText = "password",
+        onPasswordValueChange = {},
+        loginButtonText = "Log In",
+        isLogInButtonEnabled = true,
+        loginButtonClicked = {},
+        showLoading = false
+    )
+}
