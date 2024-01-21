@@ -8,8 +8,8 @@
     <string name="you_need_to_log_in_first">You need to Log In first</string>
     <string name="no_ducks_found">No Ducks Found</string>
     <string name="duck_image">Duck Image</string>
-    <string name="upvote_button">Upvote Button</string>
-    <string name="downvote_button">Downvote Button</string>
+    <string name="upvote_button">Upvote</string>
+    <string name="downvote_button">Downvote</string>
     <string name="user_logged_out">User Logged Out</string>
     <string name="account_created">Account Created</string>
     <string name="account_signed_in">Account Signed In</string>
@@ -23,4 +23,6 @@
     <string name="image_url">Image Url</string>
     <string name="hide_password">Hide Password</string>
     <string name="show_password">Show Password</string>
+    <string name="more_vert_description">"More Vert"</string>
+    <string name="back_description">Back</string>
 </resources>

@@ -151,18 +151,14 @@ fun NewPostMainContentUi(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag(""),
+                modifier = Modifier.fillMaxWidth(),
                 value = headlineText,
                 onValueChange = { onHeadlineValueChange.invoke(it) },
                 label = { Text(stringResource(R.string.headline)) }
             )
 
             OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag(""),
+                modifier = Modifier.fillMaxWidth(),
                 value = imageUrlText,
                 onValueChange = { onImageUrlValueChange.invoke(it) },
                 label = { Text(stringResource(R.string.image_url)) }
@@ -174,6 +170,7 @@ fun NewPostMainContentUi(
                     .fillMaxWidth(),
                 enabled = isCreateNewPostButtonEnabled,
                 onClick = onCreateNewPostButtonClicked
+
             ) {
                 Text(text = stringResource(R.string.create_new_post))
             }
@@ -187,11 +184,11 @@ fun NewPostMainContentUiPreview() = DuckItAndroidTheme {
     NewPostMainContentUi(
         modifier = Modifier,
         headlineText = "Super Duck",
-        onHeadlineValueChange = {  },
+        onHeadlineValueChange = { },
         imageUrlText = "https://superduck.io",
-        onImageUrlValueChange = {  },
+        onImageUrlValueChange = { },
         isCreateNewPostButtonEnabled = true,
-        onCreateNewPostButtonClicked = {  },
+        onCreateNewPostButtonClicked = { },
         isLoading = false
     )
 }
@@ -206,11 +203,11 @@ fun NewPostMainContentUiDarkPreview() = DuckItAndroidTheme {
     NewPostMainContentUi(
         modifier = Modifier,
         headlineText = "Super Duck",
-        onHeadlineValueChange = {  },
+        onHeadlineValueChange = { },
         imageUrlText = "https://superduck.io",
-        onImageUrlValueChange = {  },
+        onImageUrlValueChange = { },
         isCreateNewPostButtonEnabled = true,
-        onCreateNewPostButtonClicked = {  },
+        onCreateNewPostButtonClicked = { },
         isLoading = false
     )
 }

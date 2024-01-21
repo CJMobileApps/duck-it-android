@@ -85,7 +85,10 @@ fun EmailPasswordUi(
                     val description = if (isPasswordVisible) stringResource(R.string.hide_password)
                     else stringResource(R.string.show_password)
 
-                    IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                    IconButton(
+                        onClick = { isPasswordVisible = !isPasswordVisible },
+
+                        ) {
                         Icon(imageVector = image, description)
                     }
                 }

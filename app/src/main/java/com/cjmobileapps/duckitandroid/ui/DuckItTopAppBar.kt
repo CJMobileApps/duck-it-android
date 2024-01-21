@@ -58,8 +58,7 @@ fun DuckItTopAppBar(
                     modifier =
                     Modifier
                         .fillMaxWidth()
-                        .weight(1f)
-                        .testTag(""),
+                        .weight(1f),
                     horizontalArrangement = horizontalArrangement,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -77,7 +76,7 @@ fun DuckItTopAppBar(
                 IconButton(onClick = { navController.navigateUp() }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "",
+                        contentDescription = stringResource(R.string.back_description),
                         tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
@@ -90,7 +89,7 @@ fun DuckItTopAppBar(
             IconButton(onClick = { menuExpanded = !menuExpanded }) {
                 Icon(
                     imageVector = Icons.Filled.MoreVert,
-                    contentDescription = "",
+                    contentDescription = stringResource(R.string.more_vert_description),
                     tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
@@ -104,8 +103,9 @@ fun DuckItTopAppBar(
                             Text(
                                 text = if (isUserLoggedIn) stringResource(R.string.sign_out)
                                 else stringResource(R.string.log_in),
-                                color = MaterialTheme.colorScheme.onPrimary
-                            )
+                                color = MaterialTheme.colorScheme.onPrimary,
+
+                                )
                         },
                         onClick = {
                             menuExpanded = false

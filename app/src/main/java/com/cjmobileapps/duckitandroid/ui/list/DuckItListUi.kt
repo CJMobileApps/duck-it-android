@@ -30,6 +30,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -218,7 +219,11 @@ fun DuckItListUi(
     onUpvoteButtonClicked: (postId: String) -> Unit,
     onDownvoteButtonClicked: (postId: String) -> Unit
 ) {
-    LazyColumn(modifier = modifier.fillMaxWidth()) {
+    LazyColumn(
+        modifier = modifier
+            .fillMaxWidth()
+            .testTag("DuckItListUi")
+    ) {
         itemsIndexed(
             items = posts,
             key = { _, item: PostState ->
@@ -306,7 +311,7 @@ fun DuckItItemContentUi(
             IconButton(onClick = onUpvoteButtonClicked) {
                 Icon(
                     imageVector = Icons.Filled.ArrowUpward,
-                    contentDescription = stringResource(R.string.upvote_button),
+                    contentDescription = "${postState.headline} ${stringResource(R.string.upvote_button)}",
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -321,7 +326,7 @@ fun DuckItItemContentUi(
             IconButton(onClick = onDownvoteButtonClicked) {
                 Icon(
                     imageVector = Icons.Filled.ArrowDownward,
-                    contentDescription = stringResource(R.string.downvote_button),
+                    contentDescription = "${postState.headline} ${stringResource(R.string.downvote_button)}",
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
